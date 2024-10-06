@@ -37,8 +37,6 @@ class CreateEvent(QMainWindow):
         self.back_but.clicked.connect(self.back_main)
         self.but_create.clicked.connect(self.create_event)
 
-        self.resize(800, 600)
-        self.table_widget.setGeometry(0, 0, self.width(), self.height())
 
     def create_event(self):
         global wks1, all_events
@@ -55,164 +53,178 @@ class CreateEvent(QMainWindow):
         all_events = wks1.get("A:F")
         self.back_main()
 
-
-# class Events_List(QMainWindow):
-
-#     def __init__(self, *args):
-#         super().__init__()
-
-#         uic.loadUi('qt/event.ui', self)
-
-#         self.but_back.clicked.connect(self.back_main)
-#         self.download_but.clicked.connect(self.download_event)
-#         self.delete_but.clicked.connect(self.delete_event)
-#         self.add_student_but.clicked.connect(self.add_student)
-#         self.delete_student_but.clicked.connect(self.delete_student)
-
-#         for i in all_events[1:]:
-#             self.list_events.addItem(f"{str(i[1])} - {str(i[2])}")
-
-#     def back_main(self):
-#         self.myclose = False
-#         self.Main = MainWindow(self, '')
-#         self.Main.show()
-#         self.close()
-
-#     def download_event(self):
-#         self.list_stud = wks2.get("A:H")
-
-#         self.event.setColumnCount(3)
-
-#         self.event.setRowCount(0)
-#         self.event.setHorizontalHeaderItem(0, QTableWidgetItem("ФИО"))
-#         self.event.setHorizontalHeaderItem(1, QTableWidgetItem("Курс"))
-#         self.event.setHorizontalHeaderItem(2, QTableWidgetItem("Группа"))
-
-#         # list_id = wks2.col_values(8)
-#         selected_value = self.list_events.currentText().split(' - ')[0]
-#         ide = 0
-#         for i in all_events[1:]:
-#             if str(i[1]) == str(selected_value):
-#                 ide = i[0]
-#                 break
-
-#         list_stud = []
-#         for i in self.list_stud:
-#             if str(ide) in str(i[-1]).split(';'):
-#                 list_stud.append(i)
-
-#         # Заполняем таблицу элементами
-
-#         for i, row in enumerate(list_stud):
-
-#             self.event.setRowCount(
-
-#                 self.event.rowCount() + 1)
-
-#             for j, elem in enumerate(row[1:]):
-
-#                 self.event.setItem(
-
-#                     i, j, QTableWidgetItem(str(elem)))
-                
-#     def delete_event(self):
-#         global wks1, wks2, all_events
-#         selected_value = self.list_events.currentText().split(' - ')[0]
-
-#         ide = 0
-#         id_for_s = 0
-#         for i in all_events[1:]:
-#             if str(i[1]) == str(selected_value):
-#                 id_for_s = i[0]
-#                 break
-#             ide += 1
-        
-#         cnt = 1
-#         for i in self.list_stud:
-#             events_s = i[-1].split(';')
-#             try:
-#                 events_s.remove(str(id_for_s))
-#                 events_s = ';'.join(events_s)
-#                 wks2.update([[events_s]], f'H{cnt}')
-#             except ValueError:
-#                 pass
-#             cnt += 1
-        
-#         self.list_events.setCurrentIndex(ide+1)
-#         self.list_events.removeItem(int(ide))
-#         wks1.delete_rows(ide+2)
-#         self.event.clear()
-#         all_events = wks1.get("A:F")
-
-#     def add_student(self):
-#         event_list = 0
-#         selected_value = self.list_events.currentText().split(' - ')[0]
-#         ide = 0
-#         all_events = wks1.get("A:F")
-#         for i in all_events[1:]:
-#             print(i)
-#             if str(i[1]) == str(selected_value):
-#                 ide = i[0]
-#                 event_list = i
-#                 break
-#         print(event_list)
-#         self.Add_Stud = Add_Stud(self, event_list)
-#         self.Add_Stud.show()
-
-#     def delete_student(self):
-#         global wks1, wks2, all_events
-#         ev = 0
-#         rows = list(set([i.row() for i in self.event.selectedItems()]))
-
-#         ids = [[self.event.item(i, j).text() for j in range(3)] for i in rows]
-#         selected_value = self.list_events.currentText().split(' - ')[0]
-#         for i in all_events[1:]:
-#             if str(i[1]) == str(selected_value):
-#                 ev = i
-#                 break
-        
-#         for i in ids:
-#             for j in self.list_stud:
-#                 if i[0] == j[1]:
-#                     events_s = j[-1].split(';')
-#                     events_s.remove(str(ev[0]))
-#                     events_s = ';'.join(events_s)
-
-#                     dlit = str(int(j[6]) - int(ev[3]))
-
-#                     cnt_vnut = int(j[4]) - 1 if ev[4] == 'Внутреннее' else j[4]
-#                     cnt_vnesh = int(j[5]) - 1 if ev[4] == 'Внешнее' else j[5]
-#                     print([cnt_vnut, cnt_vnesh, dlit, events_s], self.list_stud.index(j))
-#                     wks2.update([[cnt_vnut, cnt_vnesh, dlit, events_s]], f'E{self.list_stud.index(j)+1}')
-#                     break
-#         self.download_event()
+    def back_main(self):
+        self.myclose = False
+        self.Main = MainWindow(self, '')
+        self.Main.show()
+        self.close()
 
 
 class Events_List(QMainWindow):
+
     def __init__(self, *args):
         super().__init__()
 
-        self.setWindowTitle("Масштабирование QTableWidget по размеру окна")
-        self.resize(800, 600)  # Начальные размеры окна
+        uic.loadUi('qt/event.ui', self)
 
-        # Создаем QTableWidget
-        self.table_widget = QTableWidget(10, 5)  # 10 строк и 5 столбцов
-        self.populate_table()  # Заполняем таблицу данными
+        self.but_back.clicked.connect(self.back_main)
+        self.download_but.clicked.connect(self.download_event)
+        self.delete_but.clicked.connect(self.delete_event_window)
+        self.add_student_but.clicked.connect(self.add_student)
+        self.delete_student_but.clicked.connect(self.delete_stud_window)
 
-        # Устанавливаем QTableWidget в главное окно
-        self.table_widget.setGeometry(0, 0, self.width(), self.height())  # Устанавливаем геометрию
+        for i in all_events[1:]:
+            self.list_events.addItem(f"{str(i[1])} - {str(i[2])}")
 
-    def populate_table(self):
-        # Заполнение таблицы данными
-        for row in range(10):
-            for column in range(5):
-                item = QTableWidgetItem(f"Item {row + 1}, {column + 1}")
-                self.table_widget.setItem(row, column, item)
+    def back_main(self):
+        self.myclose = False
+        self.Main = MainWindow(self, '')
+        self.Main.show()
+        self.close()
 
-    def resizeEvent(self, event):
-        # Изменяем размер таблицы в соответствии с размером окна
-        self.table_widget.setGeometry(0, 0, self.width(), self.height())
-        super().resizeEvent(event)
+    def download_event(self):
+        self.list_stud = wks2.get("A:H")
+
+        self.event.setColumnCount(3)
+
+        self.event.setRowCount(0)
+        self.event.setHorizontalHeaderItem(0, QTableWidgetItem("ФИО"))
+        self.event.setHorizontalHeaderItem(1, QTableWidgetItem("Курс"))
+        self.event.setHorizontalHeaderItem(2, QTableWidgetItem("Группа"))
+
+        # list_id = wks2.col_values(8)
+        selected_value = self.list_events.currentText().split(' - ')[0]
+        ide = 0
+        for i in all_events[1:]:
+            if str(i[1]) == str(selected_value):
+                ide = i[0]
+                break
+
+        list_stud = []
+        for i in self.list_stud:
+            if str(ide) in str(i[-1]).split(';'):
+                list_stud.append(i)
+
+        # Заполняем таблицу элементами
+
+        for i, row in enumerate(list_stud):
+
+            self.event.setRowCount(
+
+                self.event.rowCount() + 1)
+
+            for j, elem in enumerate(row[1:]):
+
+                self.event.setItem(
+
+                    i, j, QTableWidgetItem(str(elem)))
+                
+    def delete_event_window(self):
+        self.delete_window = DeleteWindow(self, "Вы дествительно хотети удалить выбранное мероприятие?")
+        self.delete_window.show()
+
+    def delete_stud_window(self):
+        rows = list(set([i.row() for i in self.event.selectedItems()]))
+
+        ids = [[self.event.item(i, j).text() for j in range(3)] for i in rows]
+        s = 'Вы дествительно хотети удалить выбранного студента?' if len(ids)==1 else 'Вы дествительно хотети удалить выбранных студентов?'
+        self.delete_window = DeleteWindow(self, s)
+        self.delete_window.show()
+                
+    def delete_event(self):
+        global wks1, wks2, all_events
+        selected_value = self.list_events.currentText().split(' - ')[0]
+
+        ide = 0
+        id_for_s = 0
+        for i in all_events[1:]:
+            if str(i[1]) == str(selected_value):
+                id_for_s = i[0]
+                break
+            ide += 1
+        
+        cnt = 1
+        for i in self.list_stud:
+            events_s = i[-1].split(';')
+            try:
+                events_s.remove(str(id_for_s))
+                events_s = ';'.join(events_s)
+                wks2.update([[events_s]], f'H{cnt}')
+            except ValueError:
+                pass
+            cnt += 1
+        
+        self.list_events.setCurrentIndex(ide+1)
+        self.list_events.removeItem(int(ide))
+        wks1.delete_rows(ide+2)
+        self.event.clear()
+        all_events = wks1.get("A:F")
+
+    def add_student(self):
+        event_list = 0
+        selected_value = self.list_events.currentText().split(' - ')[0]
+        ide = 0
+        all_events = wks1.get("A:F")
+        for i in all_events[1:]:
+            print(i)
+            if str(i[1]) == str(selected_value):
+                ide = i[0]
+                event_list = i
+                break
+        print(event_list)
+        self.Add_Stud = Add_Stud(self, event_list)
+        self.Add_Stud.show()
+
+    def delete_student(self):
+        global wks1, wks2, all_events
+        ev = 0
+        rows = list(set([i.row() for i in self.event.selectedItems()]))
+
+        ids = [[self.event.item(i, j).text() for j in range(3)] for i in rows]
+        selected_value = self.list_events.currentText().split(' - ')[0]
+        for i in all_events[1:]:
+            if str(i[1]) == str(selected_value):
+                ev = i
+                break
+        
+        for i in ids:
+            for j in self.list_stud:
+                if i[0] == j[1]:
+                    events_s = j[-1].split(';')
+                    events_s.remove(str(ev[0]))
+                    events_s = ';'.join(events_s)
+
+                    dlit = str(int(j[6]) - int(ev[3]))
+
+                    cnt_vnut = int(j[4]) - 1 if ev[4] == 'Внутреннее' else j[4]
+                    cnt_vnesh = int(j[5]) - 1 if ev[4] == 'Внешнее' else j[5]
+                    print([cnt_vnut, cnt_vnesh, dlit, events_s], self.list_stud.index(j))
+                    wks2.update([[cnt_vnut, cnt_vnesh, dlit, events_s]], f'E{self.list_stud.index(j)+1}')
+                    break
+        self.download_event()
+
+
+class DeleteWindow(QMainWindow): # Класс для удаления события.
+    def __init__(self, parent, mes):
+        super().__init__()
+
+        uic.loadUi('qt/delete_pod.ui', self)
+
+        self.parent = parent
+        self.label.setText(mes)
+        self.mes = mes
+
+        self.yes_but.clicked.connect(self.delete_event)
+        self.no_but.clicked.connect(self.back_main)
+
+    def delete_event(self):
+        if self.mes == 'Вы дествительно хотети удалить выбранное мероприятие?':
+            self.parent.delete_event()
+        self.parent.delete_student()
+        self.close()
+
+    def back_main(self):
+        self.close()
 
 
 class Add_Stud(QMainWindow): # Класс для добавления нового студента к событию.
@@ -367,16 +379,16 @@ class NonWifi(QMainWindow): # Заглушка для экрана без инт
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    try:
-        sheets = gspread.service_account(filename='kay_new.json')
-        wks1 = sheets.open("val_event").get_worksheet(0)
-        wks2 = sheets.open("val_event").get_worksheet(1)
-        all_events = wks1.get("A:F")
-        main = MainWindow()
+    # try:
+    sheets = gspread.service_account(filename='kay_new.json')
+    wks1 = sheets.open("val_event").get_worksheet(0)
+    wks2 = sheets.open("val_event").get_worksheet(1)
+    all_events = wks1.get("A:F")
+    main = MainWindow()
 
-        main.show()
-    except Exception:
-        non_wifi = NonWifi()
-        non_wifi.show()
+    main.show()
+    # except Exception:
+    #     non_wifi = NonWifi()
+    #     non_wifi.show()
     
     sys.exit(app.exec())
