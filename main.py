@@ -344,8 +344,6 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
         rows = list(set([i.row() for i in self.table_students.selectedItems()]))
 
         ids = [[self.table_students.item(i, j).text() for j in range(6)] for i in rows]
-        print(self.list_studs)
-        print(ids)
         for i in range(len(self.list_studs)):
             сount = 0
             for j in ids:
@@ -354,27 +352,14 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
                     a = self.list_studs[i][-1].split(';')
                     a.append(str(self.event_list[0]))
                     a = ';'.join(a)
-                    # wks2.update([[None, None, None, None, int(j[4])+1 if self.event_list[4] == 'Внутреннее' else j[4], 
-                    #              int(j[5])+1 if self.event_list[4] == 'Внешнее' else j[5],
-                    #              int(j[6])+int(self.event_list[3]),
-                    #              a]], f'A{self.list_studs.index(j)+1}')
-                    arr = self.list_studs[i]
-                    # ids[i] = [None, 
-                    #           None, 
-                    #           None, 
-                    #           None, 
-                    #           int(j[4])+1 if self.event_list[4] == 'Внутреннее' else j[4],
-                    #           int(j[5])+1 if self.event_list[4] == 'Внешнее' else j[5],
-                    #           int(j[6])+int(self.event_list[3]),
-                    #           a]
-                    arr[0] = None
-                    arr[1] = None
-                    arr[2] = None
-                    arr[3] = None
-                    arr[4] = int(j[3])+1 if self.event_list[4] == 'Внутреннее' else j[3]
-                    arr[5] = int(j[4])+1 if self.event_list[4] == 'Внешнее' else j[4]
-                    arr[6] = int(j[5])+int(self.event_list[3])
-                    arr[7] = a
+                    arr = [None, 
+                          None, 
+                          None, 
+                          None, 
+                          int(j[3])+1 if self.event_list[4] == 'Внутреннее' else j[3],
+                          int(j[4])+1 if self.event_list[4] == 'Внешнее' else j[4],
+                          int(j[5])+int(self.event_list[3]),
+                          a]
                     self.list_studs[i] = arr
                     break
                 else:
