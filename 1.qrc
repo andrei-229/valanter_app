@@ -4,3 +4,5 @@
     <file>a.png</file>
   </qresource>
 </RCC>
+
+<Button Content="Standard XAML button" Click="Button_Click" />

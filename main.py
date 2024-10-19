@@ -166,12 +166,10 @@ class Events_List(QMainWindow):
         ide = 0
         all_events = wks1.get("A:F")
         for i in all_events[1:]:
-            print(i)
             if str(i[1]) == str(selected_value):
                 ide = i[0]
                 event_list = i
                 break
-        print(event_list)
         self.Add_Stud = Add_Stud(self, event_list)
         self.Add_Stud.show()
 
@@ -198,7 +196,6 @@ class Events_List(QMainWindow):
 
                     cnt_vnut = int(j[4]) - 1 if ev[4] == 'Внутреннее' else j[4]
                     cnt_vnesh = int(j[5]) - 1 if ev[4] == 'Внешнее' else j[5]
-                    print([cnt_vnut, cnt_vnesh, dlit, events_s], self.list_stud.index(j))
                     wks2.update([[cnt_vnut, cnt_vnesh, dlit, events_s]], f'E{self.list_stud.index(j)+1}')
                     break
         self.download_event()
@@ -270,10 +267,9 @@ class Create_And_Add(QMainWindow): # Класс для создания ново
             wks2.update([[max(list_id) + 1, self.input_name.text(), self.input_cours.text(), self.input_group.text(), cnt_vnut, cnt_vnesh, self.event_list[3], self.event_list[0]]], f'A{len(list_id)+1}')
             self.parent.download_event()
             self.close()
-            print('good')
             self.parent.download_event()  # необходимо перезагрузить таблицу, чтобы добавленный студент увиделся в ней. Внешни
         else:
-            print('bad')
+            pass
 
     def back_add(self):
         self.Add_Student = Add_Stud(self.parent, self.event_list)
@@ -326,7 +322,6 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
         list_stud = []
 
         for i in self.list_studs:
-            print(self.event_list)
             if str(self.event_list[0]) not in str(i[-1]).split(';'):
                 list_stud.append(i)
         
@@ -349,17 +344,44 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
         rows = list(set([i.row() for i in self.table_students.selectedItems()]))
 
         ids = [[self.table_students.item(i, j).text() for j in range(6)] for i in rows]
-        for i in ids:
-            for j in self.list_studs:
-                if i[0] == j[1]:
-                    a = j[-1].split(';')
+        print(self.list_studs)
+        print(ids)
+        for i in range(len(self.list_studs)):
+            сount = 0
+            for j in ids:
+                if j[0] == self.list_studs[i][1]:
+                    
+                    a = self.list_studs[i][-1].split(';')
                     a.append(str(self.event_list[0]))
                     a = ';'.join(a)
-                    wks2.update([[int(j[4])+1 if self.event_list[4] == 'Внутреннее' else j[4], 
-                                 int(j[5])+1 if self.event_list[4] == 'Внешнее' else j[5],
-                                 int(j[6])+int(self.event_list[3]),
-                                 a]], f'E{self.list_studs.index(j)+1}')
+                    # wks2.update([[None, None, None, None, int(j[4])+1 if self.event_list[4] == 'Внутреннее' else j[4], 
+                    #              int(j[5])+1 if self.event_list[4] == 'Внешнее' else j[5],
+                    #              int(j[6])+int(self.event_list[3]),
+                    #              a]], f'A{self.list_studs.index(j)+1}')
+                    arr = self.list_studs[i]
+                    # ids[i] = [None, 
+                    #           None, 
+                    #           None, 
+                    #           None, 
+                    #           int(j[4])+1 if self.event_list[4] == 'Внутреннее' else j[4],
+                    #           int(j[5])+1 if self.event_list[4] == 'Внешнее' else j[5],
+                    #           int(j[6])+int(self.event_list[3]),
+                    #           a]
+                    arr[0] = None
+                    arr[1] = None
+                    arr[2] = None
+                    arr[3] = None
+                    arr[4] = int(j[3])+1 if self.event_list[4] == 'Внутреннее' else j[3]
+                    arr[5] = int(j[4])+1 if self.event_list[4] == 'Внешнее' else j[4]
+                    arr[6] = int(j[5])+int(self.event_list[3])
+                    arr[7] = a
+                    self.list_studs[i] = arr
                     break
+                else:
+                    сount += 1
+            if сount == len(ids):
+                self.list_studs[i] = [None]*8
+        wks2.update(self.list_studs, 'A1')
 
         self.parent.download_event()  # необходимо перезагрузить таблицу, чтобы добавленный студент увиделся в ней. Внешний
         self.close()
