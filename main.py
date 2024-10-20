@@ -8,6 +8,10 @@ from PyQt5.QtWidgets import QApplication
 
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget
 
+import subprocess
+
+import os
+
 
 class MainWindow(QMainWindow):
     def __init__(self, *args):
@@ -16,6 +20,8 @@ class MainWindow(QMainWindow):
 
         self.create_event.clicked.connect(self.openCreate)
         self.events_but.clicked.connect(self.events)
+        self.update_but.clicked.connect(self.update)
+
 
     def openCreate(self):
         self.CreateEvent = CreateEvent(self, '')
@@ -25,6 +31,16 @@ class MainWindow(QMainWindow):
     def events(self):
         self.Events_List = Events_List(self, '')
         self.Events_List.show()
+        self.close()
+
+    def update(self):
+        exe_path = "./markov.exe"
+        with open('work', encoding='utf8') as f:
+            read = f.readline()
+        print(read)
+        os.chdir(read)
+        # Запуск .exe файла
+        subprocess.Popen(exe_path)
         self.close()
 
 
@@ -196,6 +212,7 @@ class Events_List(QMainWindow):
                     dlit = str(int(self.list_stud[i][6]) - int(ev[3]))
                     cnt_vnut = int(self.list_stud[i][4]) - 1 if ev[4] == 'Внутреннее' else self.list_stud[i][4]
                     cnt_vnesh = int(self.list_stud[i][5]) - 1 if ev[4] == 'Внешнее' else self.list_stud[i][5]
+
                     arr = [None, 
                           None, 
                           None, 
@@ -404,6 +421,12 @@ if __name__ == '__main__':
     wks1 = sheets.open("val_event").get_worksheet(0)
     wks2 = sheets.open("val_event").get_worksheet(1)
     all_events = wks1.get("A:F")
+    
+    path = getattr(sys, '_MEIPASS', os.getcwd())
+    d = str(os.getcwd()).replace('\\', '/')
+    os.chdir(path)
+    with open('work', 'w', encoding='utf8') as f:
+        f.write(d)
     main = MainWindow()
 
     main.show()
