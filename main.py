@@ -196,6 +196,7 @@ class Events_List(QMainWindow):
                     dlit = str(int(self.list_stud[i][6]) - int(ev[3]))
                     cnt_vnut = int(self.list_stud[i][4]) - 1 if ev[4] == 'Внутреннее' else self.list_stud[i][4]
                     cnt_vnesh = int(self.list_stud[i][5]) - 1 if ev[4] == 'Внешнее' else self.list_stud[i][5]
+                    
                     arr = [None, 
                           None, 
                           None, 
