@@ -184,20 +184,33 @@ class Events_List(QMainWindow):
             if str(i[1]) == str(selected_value):
                 ev = i
                 break
-        
-        for i in ids:
-            for j in self.list_stud:
-                if i[0] == j[1]:
-                    events_s = j[-1].split(';')
+
+        for i in range(len(self.list_stud)):
+            сount = 0
+            for j in ids:
+                if j[0] == self.list_stud[i][1]:
+                    
+                    events_s = self.list_stud[i][-1].split(';')
                     events_s.remove(str(ev[0]))
                     events_s = ';'.join(events_s)
-
-                    dlit = str(int(j[6]) - int(ev[3]))
-
-                    cnt_vnut = int(j[4]) - 1 if ev[4] == 'Внутреннее' else j[4]
-                    cnt_vnesh = int(j[5]) - 1 if ev[4] == 'Внешнее' else j[5]
-                    wks2.update([[cnt_vnut, cnt_vnesh, dlit, events_s]], f'E{self.list_stud.index(j)+1}')
+                    dlit = str(int(self.list_stud[i][6]) - int(ev[3]))
+                    cnt_vnut = int(self.list_stud[i][4]) - 1 if ev[4] == 'Внутреннее' else self.list_stud[i][4]
+                    cnt_vnesh = int(self.list_stud[i][5]) - 1 if ev[4] == 'Внешнее' else self.list_stud[i][5]
+                    arr = [None, 
+                          None, 
+                          None, 
+                          None, 
+                          cnt_vnut,
+                          cnt_vnesh,
+                          dlit,
+                          events_s]
+                    self.list_stud[i] = arr
                     break
+                else:
+                    сount += 1
+            if сount == len(ids):
+                self.list_stud[i] = [None]*8
+        wks2.update(self.list_stud, 'A1')
         self.download_event()
 
 
