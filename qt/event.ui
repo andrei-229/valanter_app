@@ -109,7 +109,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Экспорт</string>
+     <string>Экспорт ↓</string>
     </property>
     <property name="autoDefault">
      <bool>false</bool>
