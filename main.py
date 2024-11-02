@@ -6,7 +6,7 @@ from PyQt5 import uic
 
 from PyQt5.QtWidgets import QApplication
 
-from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget
+from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget, QFileDialog
 
 import subprocess
 
@@ -235,6 +235,9 @@ class Events_List(QMainWindow):
         self.download_event()
 
     def export(self):
+        dirlist = QFileDialog.getExistingDirectory(self,"Выбрать папку",".")
+        print(dirlist)
+        if dirlist == '': return
         global wks1, wks2, all_events
         ev = 0
         selected_value = self.list_events.currentText().split(' - ')[0]
@@ -272,11 +275,11 @@ class Events_List(QMainWindow):
         df = pd.DataFrame(arr, index=[i for i in range(1, len(arr['ФИО'])+1)])
 
         try:
-            df.to_excel(f'Отчет по \'{str(selected_value)}\'.xlsx')
+            df.to_excel(f'{dirlist}/Отчет по \'{str(selected_value)}\'.xlsx')
         except PermissionError:
             print('Закрой файл, ДЕБИЛ')
 
-        wb = openpyxl.load_workbook(f'Отчет по \'{str(selected_value)}\'.xlsx')
+        wb = openpyxl.load_workbook(f'{dirlist}/Отчет по \'{str(selected_value)}\'.xlsx')
         sheet = wb['Sheet1']
 
         sheet['I1'].value = f'Событие:'
@@ -294,7 +297,7 @@ class Events_List(QMainWindow):
         sheet['I5'].value = f'Тип события:'
         sheet['J5'].value = str(event_type)
         try:
-            wb.save(f'Отчет по \'{str(selected_value)}\'.xlsx')
+            wb.save(f'{dirlist}/Отчет по \'{str(selected_value)}\'.xlsx')
         except PermissionError:
             print('Закрой файл, ДЕБИЛ')
         print('Done')

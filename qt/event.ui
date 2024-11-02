@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1314</width>
-    <height>928</height>
+    <width>1293</width>
+    <height>813</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Загрузить</string>
+     <string>Загрузить ↑</string>
     </property>
    </widget>
    <widget class="QPushButton" name="delete_but">
@@ -47,7 +47,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Удалить</string>
+     <string>Удалить 🗑️</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="event">
@@ -102,14 +102,17 @@
    <widget class="QPushButton" name="export_btn">
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>110</y>
-      <width>56</width>
-      <height>17</height>
+      <x>630</x>
+      <y>90</y>
+      <width>111</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Экспорт</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
@@ -118,8 +121,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1314</width>
-     <height>18</height>
+     <width>1293</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>
