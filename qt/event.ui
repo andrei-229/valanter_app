@@ -99,6 +99,19 @@
      <string>Удалить студента</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="export_btn">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>110</y>
+      <width>56</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -106,7 +119,7 @@
      <x>0</x>
      <y>0</y>
      <width>1314</width>
-     <height>20</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>

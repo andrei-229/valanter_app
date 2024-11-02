@@ -12,6 +12,9 @@ import subprocess
 
 import os
 
+import pandas as pd
+import openpyxl
+
 
 class MainWindow(QMainWindow):
     def __init__(self, *args):
@@ -88,6 +91,7 @@ class Events_List(QMainWindow):
         self.delete_but.clicked.connect(self.delete_event_window)
         self.add_student_but.clicked.connect(self.add_student)
         self.delete_student_but.clicked.connect(self.delete_stud_window)
+        self.export_btn.clicked.connect(self.export)
 
         for i in all_events[1:]:
             self.list_events.addItem(f"{str(i[1])} - {str(i[2])}")
@@ -205,7 +209,7 @@ class Events_List(QMainWindow):
             сount = 0
             for j in ids:
                 if j[0] == self.list_stud[i][1]:
-                    
+                    print(self.list_stud[i][-1])
                     events_s = self.list_stud[i][-1].split(';')
                     events_s.remove(str(ev[0]))
                     events_s = ';'.join(events_s)
@@ -229,6 +233,71 @@ class Events_List(QMainWindow):
                 self.list_stud[i] = [None]*8
         wks2.update(self.list_stud, 'A1')
         self.download_event()
+
+    def export(self):
+        global wks1, wks2, all_events
+        ev = 0
+        selected_value = self.list_events.currentText().split(' - ')[0]
+        ide = 0
+        id_for_s = 0
+        event_author = ''
+        event_dlit = ''
+        event_type = ''
+        event_date = ''
+        for i in all_events[1:]:
+            if str(i[1]) == str(selected_value):
+                id_for_s = i[0]
+                event_author = i[5]
+                event_dlit = i[3]
+                event_type = i[4]
+                event_date = i[2]
+                break
+            ide += 1
+        try:
+            stud = self.list_stud
+        except AttributeError:
+            stud = wks2.get("A:H")
+        arr = {'ФИО': [], 'Курс': [], 'Группа': [], 'Кол-во внутренних': [], 'Кол-во внешних': [], 'Сумма часов': []}
+        for i in range(len(stud)):
+            studq = stud[i][-1].split(';')
+            if str(id_for_s) in studq:
+                arr['ФИО'].append(stud[i][1])
+                arr['Курс'].append(stud[i][2])
+                arr['Группа'].append(stud[i][3])
+                arr['Кол-во внутренних'].append(stud[i][4])
+                arr['Кол-во внешних'].append(stud[i][5])
+                arr['Сумма часов'].append(stud[i][6])
+        print(arr)
+        
+        df = pd.DataFrame(arr, index=[i for i in range(1, len(arr['ФИО'])+1)])
+
+        try:
+            df.to_excel(f'Отчет по \'{str(selected_value)}\'.xlsx')
+        except PermissionError:
+            print('Закрой файл, ДЕБИЛ')
+
+        wb = openpyxl.load_workbook(f'Отчет по \'{str(selected_value)}\'.xlsx')
+        sheet = wb['Sheet1']
+
+        sheet['I1'].value = f'Событие:'
+        sheet['J1'].value = str(selected_value)
+
+        sheet['I2'].value = f'Автор:'
+        sheet['J2'].value = str(event_author)
+
+        sheet['I3'].value = f'Дата проведения:'
+        sheet['J3'].value = str(event_date)
+
+        sheet['I4'].value = f'Длительность проведения:'
+        sheet['J4'].value = str(event_dlit)
+
+        sheet['I5'].value = f'Тип события:'
+        sheet['J5'].value = str(event_type)
+        try:
+            wb.save(f'Отчет по \'{str(selected_value)}\'.xlsx')
+        except PermissionError:
+            print('Закрой файл, ДЕБИЛ')
+        print('Done')
 
 
 class DeleteWindow(QMainWindow): # Класс для удаления события.
