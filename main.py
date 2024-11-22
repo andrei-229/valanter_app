@@ -15,7 +15,16 @@ import os
 import pandas as pd
 import openpyxl
 import requests
-import updater.update_app as updater
+
+
+def check_update():
+        headers = {'Authorization': f'Bearer {TOKEN}'}
+        version_installed = open('updater/version.v', 'r').readline()
+        response = requests.get(url, headers=headers)
+        release_data = response.json()
+        version_release = release_data['tag_name']  # Получите версию релиза
+        # print(version_installed, release_data, version_release != version_installed)
+        return version_release != version_installed
 
 
 class MainWindow(QMainWindow):
@@ -26,6 +35,7 @@ class MainWindow(QMainWindow):
         self.create_event.clicked.connect(self.openCreate)
         self.events_but.clicked.connect(self.events)
         self.update_but.clicked.connect(self.update)
+        self.student.clicked.connect(self.student_f)
 
 
     def openCreate(self):
@@ -38,27 +48,46 @@ class MainWindow(QMainWindow):
         self.Events_List.show()
         self.close()
 
-    def check_update():
-        headers = {'Authorization': f'Bearer {TOKEN}'}
-        version_installed = open('updater/version.v', 'r').readline()
-        response = requests.get(url, headers=headers)
-        release_data = response.json()
-        version_release = release_data['tag_name']  # Получите версию релиза
-        return version_release != version_installed
 
     def update(self):
+        # print(check_update())
+        # if not(check_update()):
+        #     self.Not_Update = Not_Update(self)
+        #     self.Not_Update.show()
+        #     return
         exe_path = "./updater/up.exe"
         # with open('work', encoding='utf8') as f:
         #     read = f.readline()
-        print(d)
         os.chdir(d)
         # Запуск .exe файла
         subprocess.Popen(exe_path)
-        self.close()
+        QApplication.quit()
         # if self.check_update:
         #     updater.download_update()
         #     print('Обновление загружено.')
 
+    def student_f(self):
+        self.Student_C = Student_C(self)
+        self.Student_C.show()
+        self.close()
+
+
+class Student_C(QMainWindow):
+    def __init__(self, *args):
+        super().__init__()
+        uic.loadUi('qt/student.ui', self)
+        self.back_but.clicked.connect(self.back_main)
+
+    def back_main(self):
+        self.myclose = False
+        self.Main = MainWindow(self, '')
+        self.Main.show()
+        self.close()
+
+class Not_Update(QMainWindow):
+    def __init__(self, *args):
+        super().__init__()
+        uic.loadUi('qt/non_update.ui', self)
 
 
 class CreateEvent(QMainWindow):
