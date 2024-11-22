@@ -13,92 +13,116 @@
   <property name="windowTitle">
    <string>Главная</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(232, 245, 250);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="create_event">
+    <item row="3" column="0">
+     <widget class="QPushButton" name="update_but">
       <property name="minimumSize">
        <size>
-        <width>250</width>
+        <width>500</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>500</width>
         <height>50</height>
        </size>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>15</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
-       <string>Создать мероприятие</string>
+       <string>Проверить обновления</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="2">
-     <spacer name="horizontalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="2" column="1">
+    <item row="2" column="0">
      <widget class="QPushButton" name="student">
       <property name="minimumSize">
        <size>
-        <width>0</width>
+        <width>500</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>500</width>
         <height>50</height>
        </size>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>15</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string>Сводка о студенте</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="events_but">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="create_event">
       <property name="minimumSize">
        <size>
-        <width>0</width>
+        <width>500</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>500</width>
         <height>50</height>
        </size>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>15</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
-       <string>Мероприятия</string>
+       <string>Создать мероприятие</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QPushButton" name="update_but">
+    <item row="1" column="0">
+     <widget class="QPushButton" name="events_but">
+      <property name="minimumSize">
+       <size>
+        <width>500</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>500</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>15</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
-       <string>PushButton</string>
+       <string>Мероприятия</string>
       </property>
      </widget>
     </item>
@@ -110,7 +134,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
