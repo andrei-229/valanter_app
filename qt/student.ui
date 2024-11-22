@@ -102,6 +102,22 @@
         </property>
        </widget>
       </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>15</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </item>
     <item>
@@ -110,7 +126,7 @@
        <widget class="QLabel" name="label">
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>110</width>
           <height>16777215</height>
          </size>
         </property>
@@ -136,7 +152,7 @@
        <widget class="QLineEdit" name="input_fio">
         <property name="maximumSize">
          <size>
-          <width>620</width>
+          <width>616</width>
           <height>16777215</height>
          </size>
         </property>
@@ -413,14 +429,14 @@
          <widget class="QPushButton" name="save_btn">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>200</width>
             <height>50</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>200</width>
-            <height>16777215</height>
+            <height>50</height>
            </size>
           </property>
           <property name="font">

@@ -10,8 +10,23 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>800</width>
+    <height>600</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(232, 245, 250);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -21,12 +36,26 @@
        <widget class="QPushButton" name="back_but">
         <property name="minimumSize">
          <size>
-          <width>60</width>
-          <height>60</height>
+          <width>70</width>
+          <height>50</height>
          </size>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>70</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
         <property name="text">
-         <string>&lt;-</string>
+         <string>←</string>
         </property>
        </widget>
       </item>
@@ -80,7 +109,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>30</width>
           <height>20</height>
          </size>
         </property>
@@ -140,15 +169,25 @@
       </item>
       <item row="6" column="1">
        <widget class="QLabel" name="label_4">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>Организатор</string>
+         <string>Организатор:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>Название мероприятия</string>
+         <string>Название мероприятия:</string>
         </property>
        </widget>
       </item>
@@ -172,7 +211,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>35</width>
           <height>20</height>
          </size>
         </property>
@@ -186,12 +225,20 @@
           <height>40</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>Дата мероприятия</string>
+         <string>Дата мероприятия:</string>
         </property>
        </widget>
       </item>
@@ -210,8 +257,13 @@
       </item>
       <item row="4" column="1">
        <widget class="QLabel" name="label_3">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>Длительность</string>
+         <string>Длительность:</string>
         </property>
        </widget>
       </item>
@@ -236,6 +288,9 @@
           <height>40</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
        </widget>
       </item>
       <item row="0" column="3">
@@ -245,6 +300,9 @@
           <width>0</width>
           <height>40</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
         </property>
        </widget>
       </item>
@@ -269,6 +327,9 @@
           <height>40</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -290,6 +351,11 @@
       </item>
       <item row="1" column="2">
        <widget class="QRadioButton" name="vnut_radio">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Внутреннее</string>
         </property>
@@ -352,6 +418,11 @@
       </item>
       <item row="1" column="4">
        <widget class="QRadioButton" name="vnesh_radio">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Внешнее</string>
         </property>
@@ -417,23 +488,27 @@
        <widget class="QPushButton" name="but_create">
         <property name="minimumSize">
          <size>
-          <width>200</width>
-          <height>40</height>
+          <width>250</width>
+          <height>50</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>350</width>
-          <height>16777215</height>
+          <width>250</width>
+          <height>50</height>
          </size>
         </property>
         <property name="font">
          <font>
+          <pointsize>10</pointsize>
           <kerning>false</kerning>
          </font>
         </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(221, 255, 204);</string>
         </property>
         <property name="text">
          <string>Создать мероприятие</string>
@@ -476,7 +551,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
