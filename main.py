@@ -8,12 +8,14 @@ from PyQt5.QtWidgets import QApplication
 
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget, QFileDialog
 
+from dotenv import load_dotenv
+
 import subprocess
-
 import os
-
 import pandas as pd
 import openpyxl
+import requests
+import updater.update_app as updater
 
 
 class MainWindow(QMainWindow):
@@ -36,15 +38,27 @@ class MainWindow(QMainWindow):
         self.Events_List.show()
         self.close()
 
+    def check_update():
+        headers = {'Authorization': f'Bearer {TOKEN}'}
+        version_installed = open('updater/version.v', 'r').readline()
+        response = requests.get(url, headers=headers)
+        release_data = response.json()
+        version_release = release_data['tag_name']  # Получите версию релиза
+        return version_release != version_installed
+
     def update(self):
-        exe_path = "./markov.exe"
-        with open('work', encoding='utf8') as f:
-            read = f.readline()
-        print(read)
-        os.chdir(read)
+        exe_path = "./updater/up.exe"
+        # with open('work', encoding='utf8') as f:
+        #     read = f.readline()
+        print(d)
+        os.chdir(d)
         # Запуск .exe файла
         subprocess.Popen(exe_path)
         self.close()
+        # if self.check_update:
+        #     updater.download_update()
+        #     print('Обновление загружено.')
+
 
 
 class CreateEvent(QMainWindow):
@@ -494,11 +508,18 @@ if __name__ == '__main__':
     wks2 = sheets.open("val_event").get_worksheet(1)
     all_events = wks1.get("A:F")
     
-    path = getattr(sys, '_MEIPASS', os.getcwd())
-    d = str(os.getcwd()).replace('\\', '/')
-    os.chdir(path)
+    path = getattr(sys, '_MEIPASS', os.getcwd())  # Дерриктория внутри exe файла
+    d = str(os.getcwd()).replace('\\', '/')  # Запоминаем где были
+    os.chdir(path)  # Сменяем рабочудеррикторию, чтобы подгрузить окошки и .env
+
+    load_dotenv()
+    TOKEN = os.getenv('TOKEN_GIT')
+    url = os.getenv('GIT_LINK')
+    repo_owner = os.getenv('REPO_OWNER')  # Имя владельца репозитория
+    repo_name = os.getenv('REPO_NAME')   # Имя репозитория
+
     with open('work', 'w', encoding='utf8') as f:
-        f.write(d)
+        f.write(d)  # Сохраняем
     main = MainWindow()
 
     main.show()
