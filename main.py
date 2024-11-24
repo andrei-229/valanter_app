@@ -75,13 +75,50 @@ class MainWindow(QMainWindow):
 class Student_C(QMainWindow):
     def __init__(self, *args):
         super().__init__()
-        uic.loadUi('qt/student.ui', self)
+        uic.loadUi('qt/load_student.ui', self)
         self.back_but.clicked.connect(self.back_main)
+        self.add_student_btn.clicked.connect(self.add_student)
+        self.list_studs = wks2.get("A:I")
 
     def back_main(self):
         self.myclose = False
         self.Main = MainWindow(self, '')
         self.Main.show()
+        self.close()
+
+    def add_student(self):
+        global wks1, all_students
+        search_text = self.input_fio.text()
+        
+        new_list = []
+        for i in self.list_studs:
+            if search_text.lower() == str(i[1]).lower():
+                new_list.append(i)
+        if len(new_list) == 1:
+            self.Student = Student(new_list[0])
+            self.Student.show()
+            self.close()
+        
+class Student(MainWindow):
+    def __init__(self, student):
+        super().__init__()
+        uic.loadUi('qt/student.ui', self)
+
+        self.student = student
+        self.back_but.clicked.connect(self.back)
+
+        self.input_fio.setText(self.student[1])
+        self.num_inst.setText(self.student[8])
+        self.num_kurs.setText(self.student[2])
+        self.num_group.setText(self.student[3])
+        self.in_events.setText(self.student[4])
+        self.out_events.setText(self.student[5])
+        self.time_total.setText(self.student[6])
+
+    def back(self):
+        self.myclose = False
+        self.Student_C = Student_C(self)
+        self.Student_C.show()
         self.close()
 
 class Not_Update(QMainWindow):
@@ -108,11 +145,12 @@ class CreateEvent(QMainWindow):
         vnut_radio = self.vnut_radio.isChecked()
         author_event = str(self.author_event.text())
         list_id = [int(i) for i in wks1.col_values(1)[1:]]
+        platform_event = str(self.input_platform.text())
         try:
-            wks1.update([[max(list_id) + 1, name_event, date_event, hours_event, "Внутреннее" if vnut_radio else "Внешнее", author_event]], f'A{len(list_id)+2}')
+            wks1.update([[max(list_id) + 1, name_event, date_event, hours_event, "Внутреннее" if vnut_radio else "Внешнее", author_event, platform_event]], f'A{len(list_id)+2}')
         except ValueError:
-            wks1.update([[1, name_event, date_event, hours_event, "Внутреннее" if vnut_radio else "Внешнее", author_event]], f'A2')
-        all_events = wks1.get("A:F")
+            wks1.update([[1, name_event, date_event, hours_event, "Внутреннее" if vnut_radio else "Внешнее", author_event, platform_event]], f'A2')
+        all_events = wks1.get("A:G")
         self.back_main()
 
     def back_main(self):
@@ -146,14 +184,15 @@ class Events_List(QMainWindow):
         self.close()
 
     def download_event(self):
-        self.list_stud = wks2.get("A:H")
+        self.list_stud = wks2.get("A:I")
 
-        self.event.setColumnCount(3)
+        self.event.setColumnCount(4)
 
         self.event.setRowCount(0)
         self.event.setHorizontalHeaderItem(0, QTableWidgetItem("ФИО"))
-        self.event.setHorizontalHeaderItem(1, QTableWidgetItem("Курс"))
-        self.event.setHorizontalHeaderItem(2, QTableWidgetItem("Группа"))
+        self.event.setHorizontalHeaderItem(1, QTableWidgetItem("№ Института"))
+        self.event.setHorizontalHeaderItem(2, QTableWidgetItem("Курс"))
+        self.event.setHorizontalHeaderItem(3, QTableWidgetItem("Группа"))
 
         # list_id = wks2.col_values(8)
         selected_value = self.list_events.currentText().split(' - ')[0]
@@ -165,8 +204,10 @@ class Events_List(QMainWindow):
 
         list_stud = []
         for i in self.list_stud:
-            if str(ide) in str(i[-1]).split(';'):
-                list_stud.append(i)
+            print(str(ide) in str(i[7]).split(';'))
+            if str(ide) in str(i[7]).split(';'):
+                print(i)
+                list_stud.append([i[1], i[8], i[2], i[3]])
 
         # Заполняем таблицу элементами
 
@@ -176,7 +217,7 @@ class Events_List(QMainWindow):
 
                 self.event.rowCount() + 1)
 
-            for j, elem in enumerate(row[1:]):
+            for j, elem in enumerate(row):
 
                 self.event.setItem(
 
@@ -208,7 +249,7 @@ class Events_List(QMainWindow):
         
         cnt = 1
         for i in self.list_stud:
-            events_s = i[-1].split(';')
+            events_s = i[7].split(';')
             try:
                 events_s.remove(str(id_for_s))
                 events_s = ';'.join(events_s)
@@ -221,13 +262,13 @@ class Events_List(QMainWindow):
         self.list_events.removeItem(int(ide))
         wks1.delete_rows(ide+2)
         self.event.clear()
-        all_events = wks1.get("A:F")
+        all_events = wks1.get("A:G")
 
     def add_student(self):
         event_list = 0
         selected_value = self.list_events.currentText().split(' - ')[0]
         ide = 0
-        all_events = wks1.get("A:F")
+        all_events = wks1.get("A:G")
         for i in all_events[1:]:
             if str(i[1]) == str(selected_value):
                 ide = i[0]
@@ -252,10 +293,11 @@ class Events_List(QMainWindow):
             сount = 0
             for j in ids:
                 if j[0] == self.list_stud[i][1]:
-                    print(self.list_stud[i][-1])
-                    events_s = self.list_stud[i][-1].split(';')
+                    print(self.list_stud[i][7])
+                    events_s = self.list_stud[i][7].split(';')
                     events_s.remove(str(ev[0]))
                     events_s = ';'.join(events_s)
+                    events_s = -1 if events_s == '' else events_s
                     dlit = str(int(self.list_stud[i][6]) - int(ev[3]))
                     cnt_vnut = int(self.list_stud[i][4]) - 1 if ev[4] == 'Внутреннее' else self.list_stud[i][4]
                     cnt_vnesh = int(self.list_stud[i][5]) - 1 if ev[4] == 'Внешнее' else self.list_stud[i][5]
@@ -293,21 +335,23 @@ class Events_List(QMainWindow):
         for i in all_events[1:]:
             if str(i[1]) == str(selected_value):
                 id_for_s = i[0]
-                event_author = i[5]
+                event_date = i[2]
                 event_dlit = i[3]
                 event_type = i[4]
-                event_date = i[2]
+                event_author = i[5]
+                event_platform = i[6]
                 break
             ide += 1
         try:
             stud = self.list_stud
         except AttributeError:
-            stud = wks2.get("A:H")
-        arr = {'ФИО': [], 'Курс': [], 'Группа': [], 'Кол-во внутренних': [], 'Кол-во внешних': [], 'Сумма часов': []}
+            stud = wks2.get("A:I")
+        arr = {'ФИО': [], '№ Института': [], 'Курс': [], 'Группа': [], 'Кол-во внутренних': [], 'Кол-во внешних': [], 'Сумма часов': []}
         for i in range(len(stud)):
-            studq = stud[i][-1].split(';')
+            studq = stud[i][7].split(';')
             if str(id_for_s) in studq:
                 arr['ФИО'].append(stud[i][1])
+                arr['№ Института'].append(stud[i][8])
                 arr['Курс'].append(stud[i][2])
                 arr['Группа'].append(stud[i][3])
                 arr['Кол-во внутренних'].append(stud[i][4])
@@ -325,20 +369,23 @@ class Events_List(QMainWindow):
         wb = openpyxl.load_workbook(f'{dirlist}/Отчет по \'{str(selected_value)}\'.xlsx')
         sheet = wb['Sheet1']
 
-        sheet['I1'].value = f'Событие:'
-        sheet['J1'].value = str(selected_value)
+        sheet['J1'].value = f'Событие:'
+        sheet['K1'].value = str(selected_value)
 
-        sheet['I2'].value = f'Автор:'
-        sheet['J2'].value = str(event_author)
+        sheet['J2'].value = f'Автор:'
+        sheet['K2'].value = str(event_author)
 
-        sheet['I3'].value = f'Дата проведения:'
-        sheet['J3'].value = str(event_date)
+        sheet['J3'].value = f'Дата проведения:'
+        sheet['K3'].value = str(event_date)
 
-        sheet['I4'].value = f'Длительность проведения:'
-        sheet['J4'].value = str(event_dlit)
+        sheet['J4'].value = f'Длительность проведения:'
+        sheet['K4'].value = str(event_dlit)
 
-        sheet['I5'].value = f'Тип события:'
-        sheet['J5'].value = str(event_type)
+        sheet['J5'].value = f'Тип события:'
+        sheet['K5'].value = str(event_type)
+
+        sheet['J6'].value = f'Площадка проведения:'
+        sheet['K6'].value = str(event_platform)
         try:
             wb.save(f'{dirlist}/Отчет по \'{str(selected_value)}\'.xlsx')
         except PermissionError:
@@ -356,8 +403,8 @@ class DeleteWindow(QMainWindow): # Класс для удаления событ
         self.label.setText(mes)
         self.mes = mes
 
-        self.yes_but.clicked.connect(self.delete_event)
-        self.no_but.clicked.connect(self.back_main)
+        self.yes_btn.clicked.connect(self.delete_event)
+        self.no_btn.clicked.connect(self.back_main)
 
     def delete_event(self):
         if self.mes == 'Вы дествительно хотети удалить выбранное мероприятие?':
@@ -375,8 +422,8 @@ class Add_Stud(QMainWindow): # Класс для добавления новог
 
         uic.loadUi('qt/add_s.ui', self)
 
-        self.new_s.clicked.connect(self.new_student)
-        self.iz_baz_but.clicked.connect(self.iz_baz)
+        self.new_student_btn.clicked.connect(self.new_student)
+        self.from_baze_btn.clicked.connect(self.iz_baz)
 
         self.parent = parent
         self.event_list = event_list
@@ -398,18 +445,18 @@ class Create_And_Add(QMainWindow): # Класс для создания ново
 
         uic.loadUi('qt/create_and_add.ui', self)
 
-        self.add_but.clicked.connect(self.create_and_add)
+        self.add_student_btn.clicked.connect(self.create_and_add)
         self.back_but.clicked.connect(self.back_add)
 
         self.parent = parent
         self.event_list = event_list
 
     def create_and_add(self):
-        if self.input_name.text() and self.input_cours.text() and self.input_group.text():
+        if self.input_fio.text() and self.num_kurs.text() and self.num_group.text() and self.num_inst.text():
             list_id = [int(i) for i in wks2.col_values(1)]
             cnt_vnut = 0 if self.event_list[4] != 'Внутреннее' else 1
             cnt_vnesh = 0 if self.event_list[4]!= 'Внешнее' else 1
-            wks2.update([[max(list_id) + 1, self.input_name.text(), self.input_cours.text(), self.input_group.text(), cnt_vnut, cnt_vnesh, self.event_list[3], self.event_list[0]]], f'A{len(list_id)+1}')
+            wks2.update([[max(list_id) + 1, self.input_fio.text(), self.num_kurs.text(), self.num_group.text(), cnt_vnut, cnt_vnesh, self.event_list[3], self.event_list[0], self.num_inst.text()]], f'A{len(list_id)+1}')
             self.parent.download_event()
             self.close()
             self.parent.download_event()  # необходимо перезагрузить таблицу, чтобы добавленный студент увиделся в ней. Внешни
@@ -430,25 +477,26 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
 
         self.parent = parent
         self.event_list = event_list
-        self.list_studs = wks2.get('A:H')
+        self.list_studs = wks2.get('A:I')
 
         self.load_table()
 
         self.back_but.clicked.connect(self.back_add)
-        self.search_but.clicked.connect(self.search_student)
-        self.add_but.clicked.connect(self.add_student)
+        self.search_btn.clicked.connect(self.search_student)
+        self.add_btn.clicked.connect(self.add_student)
 
     def draw_columns(self, list_stud):
         self.table_students.clear()
-        self.table_students.setColumnCount(6)
+        self.table_students.setColumnCount(7)
 
         self.table_students.setRowCount(0)
         self.table_students.setHorizontalHeaderItem(0, QTableWidgetItem("ФИО"))
-        self.table_students.setHorizontalHeaderItem(1, QTableWidgetItem("Курс"))
-        self.table_students.setHorizontalHeaderItem(2, QTableWidgetItem("Группа"))
-        self.table_students.setHorizontalHeaderItem(3, QTableWidgetItem("Кол-во внут."))
-        self.table_students.setHorizontalHeaderItem(4, QTableWidgetItem("Кол-во внеш."))
-        self.table_students.setHorizontalHeaderItem(5, QTableWidgetItem("Суммарные часы"))
+        self.table_students.setHorizontalHeaderItem(1, QTableWidgetItem("№ Института"))
+        self.table_students.setHorizontalHeaderItem(2, QTableWidgetItem("Курс"))
+        self.table_students.setHorizontalHeaderItem(3, QTableWidgetItem("Группа"))
+        self.table_students.setHorizontalHeaderItem(4, QTableWidgetItem("Кол-во внут."))
+        self.table_students.setHorizontalHeaderItem(5, QTableWidgetItem("Кол-во внеш."))
+        self.table_students.setHorizontalHeaderItem(6, QTableWidgetItem("Суммарные часы"))
 
         for i, row in enumerate(list_stud):
 
@@ -467,8 +515,8 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
         list_stud = []
 
         for i in self.list_studs:
-            if str(self.event_list[0]) not in str(i[-1]).split(';'):
-                list_stud.append(i)
+            if str(self.event_list[0]) not in str(i[7]).split(';'):
+                list_stud.append([i[0], i[1], i[8], i[2], i[3], i[4], i[5], i[6], i[7]])
         
         self.draw_columns(list_stud)
                 
@@ -488,15 +536,20 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
     def add_student(self):
         rows = list(set([i.row() for i in self.table_students.selectedItems()]))
 
-        ids = [[self.table_students.item(i, j).text() for j in range(6)] for i in rows]
+        ids = [[self.table_students.item(i, j).text() for j in range(7)] for i in rows]
         for i in range(len(self.list_studs)):
             сount = 0
             for j in ids:
+                print(j)
+                j = [j[0], j[2], j[3], j[4], j[5], j[6], j[1]]
                 if j[0] == self.list_studs[i][1]:
-                    
-                    a = self.list_studs[i][-1].split(';')
-                    a.append(str(self.event_list[0]))
-                    a = ';'.join(a)
+                    if self.list_studs[i][7] != str(-1):
+                        a = self.list_studs[i][7].split(';')
+                        a.append(str(self.event_list[0]))
+                        a = ';'.join(a)
+                    else: 
+                        a = str(self.event_list[0])
+                    print(j, a)
                     arr = [None, 
                           None, 
                           None, 
@@ -504,7 +557,8 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
                           int(j[3])+1 if self.event_list[4] == 'Внутреннее' else j[3],
                           int(j[4])+1 if self.event_list[4] == 'Внешнее' else j[4],
                           int(j[5])+int(self.event_list[3]),
-                          a]
+                          a,
+                          None]
                     self.list_studs[i] = arr
                     break
                 else:
@@ -531,29 +585,29 @@ class NonWifi(QMainWindow): # Заглушка для экрана без инт
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    # try:
-    sheets = gspread.service_account(filename='kay_new.json')
-    wks1 = sheets.open("val_event").get_worksheet(0)
-    wks2 = sheets.open("val_event").get_worksheet(1)
-    all_events = wks1.get("A:F")
-    
-    path = getattr(sys, '_MEIPASS', os.getcwd())  # Дерриктория внутри exe файла
-    d = str(os.getcwd()).replace('\\', '/')  # Запоминаем где были
-    os.chdir(path)  # Сменяем рабочудеррикторию, чтобы подгрузить окошки и .env
+    try:
+        sheets = gspread.service_account(filename='kay_new.json')
+        wks1 = sheets.open("val_event").get_worksheet(0)
+        wks2 = sheets.open("val_event").get_worksheet(1)
+        all_events = wks1.get("A:G")
+        
+        path = getattr(sys, '_MEIPASS', os.getcwd())  # Дерриктория внутри exe файла
+        d = str(os.getcwd()).replace('\\', '/')  # Запоминаем где были
+        os.chdir(path)  # Сменяем рабочудеррикторию, чтобы подгрузить окошки и .env
 
-    load_dotenv()
-    TOKEN = os.getenv('TOKEN_GIT')
-    url = os.getenv('GIT_LINK')
-    repo_owner = os.getenv('REPO_OWNER')  # Имя владельца репозитория
-    repo_name = os.getenv('REPO_NAME')   # Имя репозитория
+        load_dotenv()
+        TOKEN = os.getenv('TOKEN_GIT')
+        url = os.getenv('GIT_LINK')
+        repo_owner = os.getenv('REPO_OWNER')  # Имя владельца репозитория
+        repo_name = os.getenv('REPO_NAME')   # Имя репозитория
 
-    with open('work', 'w', encoding='utf8') as f:
-        f.write(d)  # Сохраняем
-    main = MainWindow()
+        with open('work', 'w', encoding='utf8') as f:
+            f.write(d)  # Сохраняем
+        main = MainWindow()
 
-    main.show()
-    # except Exception:
-    #     non_wifi = NonWifi()
-    #     non_wifi.show()
+        main.show()
+    except Exception:
+        non_wifi = NonWifi()
+        non_wifi.show()
     
     sys.exit(app.exec())

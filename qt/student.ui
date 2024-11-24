@@ -319,7 +319,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="out_events">
+       <widget class="QLineEdit" name="in_events">
         <property name="maximumSize">
          <size>
           <width>430</width>
@@ -359,7 +359,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="in_events">
+       <widget class="QLineEdit" name="out_events">
         <property name="maximumSize">
          <size>
           <width>430</width>
@@ -464,7 +464,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
