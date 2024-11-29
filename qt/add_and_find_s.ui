@@ -34,7 +34,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>Добавление студента в мероприятие</string>
+   <string>Поиск и добавление студента</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(232, 245, 250);</string>
@@ -70,7 +70,7 @@
 </string>
         </property>
         <property name="text">
-         <string>Новый</string>
+         <string>Добавить студента</string>
         </property>
        </widget>
       </item>
@@ -110,7 +110,7 @@
          <string notr="true">background-color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
-         <string>Из базы</string>
+         <string>Найти студента</string>
         </property>
        </widget>
       </item>
