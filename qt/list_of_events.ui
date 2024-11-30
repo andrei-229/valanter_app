@@ -72,15 +72,32 @@
      <rect>
       <x>20</x>
       <y>10</y>
-      <width>80</width>
-      <height>61</height>
+      <width>70</width>
+      <height>50</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>70</width>
+      <height>50</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>70</width>
+      <height>50</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>&lt;-</string>
+     <string>←</string>
     </property>
    </widget>
    <widget class="QPushButton" name="add_student_but">
