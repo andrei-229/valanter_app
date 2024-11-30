@@ -85,7 +85,13 @@
          <bool>true</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 255);
+         <string notr="true">QPushButton{
+background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+background-color: rgb(255, 192, 192);
+}
+
 </string>
         </property>
         <property name="text">

@@ -52,7 +52,13 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 255);</string>
+         <string notr="true">QPushButton{
+background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+background-color: rgb(242, 255, 235);
+}
+</string>
         </property>
         <property name="text">
          <string>←</string>
@@ -144,7 +150,13 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(221, 255, 204);</string>
+         <string notr="true">QPushButton{
+background-color: rgb(221, 255, 204);
+}
+QPushButton:hover{
+background-color: rgb(220, 255, 166);
+}
+</string>
         </property>
         <property name="text">
          <string>Найти</string>
@@ -188,7 +200,13 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(221, 255, 204);</string>
+         <string notr="true">QPushButton{
+background-color: rgb(221, 255, 204);
+}
+QPushButton:hover{
+background-color: rgb(201, 255, 128);
+}
+</string>
         </property>
         <property name="text">
          <string>Загрузить</string>

@@ -38,7 +38,13 @@
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
+       <string notr="true">QPushButton{
+background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+background-color: rgb(242, 255, 235);
+}
+</string>
       </property>
       <property name="text">
        <string>Проверить обновления</string>
@@ -65,7 +71,13 @@
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
+       <string notr="true">QPushButton{
+background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+background-color: rgb(242, 255, 235);
+}
+</string>
       </property>
       <property name="text">
        <string>Сводка о студенте</string>
@@ -92,7 +104,13 @@
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
+       <string notr="true">QPushButton{
+background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+background-color: rgb(242, 255, 235);
+}
+</string>
       </property>
       <property name="text">
        <string>Создать мероприятие</string>
@@ -119,7 +137,13 @@
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
+       <string notr="true">QPushButton{
+background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+background-color: rgb(242, 255, 235);
+}
+</string>
       </property>
       <property name="text">
        <string>Мероприятия</string>

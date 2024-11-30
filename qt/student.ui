@@ -52,7 +52,13 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 255);</string>
+         <string notr="true">QPushButton{
+background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+background-color: rgb(242, 255, 235);
+}
+</string>
         </property>
         <property name="text">
          <string>←</string>
@@ -95,7 +101,13 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(162, 221, 250);</string>
+         <string notr="true">QPushButton{
+background-color: rgb(162, 221, 250);
+}
+QPushButton:hover{
+background-color: rgb(125, 209, 251);
+}
+</string>
         </property>
         <property name="text">
          <string>Список мероприятий</string>
@@ -174,7 +186,7 @@
        <widget class="QLabel" name="label_2">
         <property name="maximumSize">
          <size>
-          <width>115</width>
+          <width>120</width>
           <height>16777215</height>
          </size>
         </property>
@@ -213,7 +225,7 @@
        <widget class="QLabel" name="label_3">
         <property name="maximumSize">
          <size>
-          <width>110</width>
+          <width>90</width>
           <height>16777215</height>
          </size>
         </property>
@@ -302,9 +314,15 @@
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
        <widget class="QLabel" name="label_5">
+        <property name="minimumSize">
+         <size>
+          <width>330</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>300</width>
+          <width>330</width>
           <height>16777215</height>
          </size>
         </property>
@@ -322,7 +340,7 @@
        <widget class="QLineEdit" name="in_events">
         <property name="maximumSize">
          <size>
-          <width>430</width>
+          <width>400</width>
           <height>16777215</height>
          </size>
         </property>
@@ -342,9 +360,15 @@
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
        <widget class="QLabel" name="label_6">
+        <property name="minimumSize">
+         <size>
+          <width>330</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>300</width>
+          <width>330</width>
           <height>16777215</height>
          </size>
         </property>
@@ -362,7 +386,7 @@
        <widget class="QLineEdit" name="out_events">
         <property name="maximumSize">
          <size>
-          <width>430</width>
+          <width>400</width>
           <height>16777215</height>
          </size>
         </property>
@@ -382,9 +406,15 @@
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <item>
        <widget class="QLabel" name="label_7">
+        <property name="minimumSize">
+         <size>
+          <width>330</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>300</width>
+          <width>330</width>
           <height>16777215</height>
          </size>
         </property>
@@ -402,7 +432,7 @@
        <widget class="QLineEdit" name="time_total">
         <property name="maximumSize">
          <size>
-          <width>430</width>
+          <width>400</width>
           <height>16777215</height>
          </size>
         </property>
@@ -415,7 +445,7 @@
          <string notr="true">background-color: rgb(255, 255, 255);</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -445,7 +475,13 @@
            </font>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(221, 255, 204);</string>
+           <string notr="true">QPushButton{
+background-color: rgb(221, 255, 204);
+}
+QPushButton:hover{
+background-color: rgb(201, 255, 128);
+}
+</string>
           </property>
           <property name="text">
            <string>Сохранить</string>

@@ -94,7 +94,13 @@
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);</string>
+     <string notr="true">QPushButton{
+background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+background-color: rgb(242, 255, 235);
+}
+</string>
     </property>
     <property name="text">
      <string>←</string>
@@ -110,7 +116,13 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(221, 255, 204);</string>
+     <string notr="true">QPushButton{
+background-color: rgb(221, 255, 204);
+}
+QPushButton:hover{
+background-color: rgb(201, 255, 128);
+}
+</string>
     </property>
     <property name="text">
      <string>Добавить мероприятие</string>
@@ -132,7 +144,13 @@
      </size>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 185, 185);</string>
+     <string notr="true">QPushButton{
+background-color: rgb(255, 185, 185);
+}
+QPushButton:hover{
+background-color: rgb(255, 128, 128);
+}
+</string>
     </property>
     <property name="text">
      <string>Удалить мероприятие</string>

@@ -66,8 +66,12 @@
          <bool>true</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 255);
-</string>
+         <string notr="true">QPushButton{
+	background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+	background-color: rgb(242, 255, 235);
+}</string>
         </property>
         <property name="text">
          <string>Новый</string>
@@ -107,7 +111,12 @@
          <bool>true</bool>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(255, 255, 255);</string>
+         <string notr="true">QPushButton{
+	background-color: rgb(255, 255, 255);
+}
+QPushButton:hover{
+	background-color: rgb(242, 255, 235);
+}</string>
         </property>
         <property name="text">
          <string>Из базы</string>
