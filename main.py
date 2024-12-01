@@ -78,6 +78,7 @@ class Pred_Load_Add(QMainWindow):
         uic.loadUi('qt/add_and_find_s.ui', self)
         self.new_student_btn.clicked.connect(self.open_create)
         self.from_baze_btn.clicked.connect(self.open_search)
+        self.back_but.clicked.connect(self.back)
 
     def open_create(self):
         self.Create_St = Create_St(self)
@@ -87,6 +88,11 @@ class Pred_Load_Add(QMainWindow):
     def open_search(self):
         self.Load_Student = Load_Student(self)
         self.Load_Student.show()
+        self.close()
+    def back(self):
+        self.myclose = False
+        self.Main = MainWindow(self, '')
+        self.Main.show()
         self.close()
 
 
@@ -156,9 +162,8 @@ class Load_Student(QMainWindow):
                     i, j, QTableWidgetItem(str(elem)))
 
     def back_main(self):
-        self.myclose = False
-        self.Main = MainWindow(self, '')
-        self.Main.show()
+        self.Pred_Load_Add = Pred_Load_Add(self, '')
+        self.Pred_Load_Add.show()
         self.close()
 
     def search_student(self):
