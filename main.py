@@ -232,15 +232,7 @@ class Student(MainWindow):
         wks2.update(self.list_studs, f'A1')
 
     def events_list_s(self):
-        event_list = wks1.get("A:G")
-        stud_list = self.student[7].split(';')
-        itog = []
-        for i in stud_list:
-            for j in event_list[1:]:
-                if str(i) == str(j[0]):
-                    itog.append(j)
-                    break
-        self.Events_List_Stedent = Events_List_Stedent(itog, self.student)
+        self.Events_List_Stedent = Events_List_Stedent(self.student)
         self.Events_List_Stedent.show()
         self.close()
 
@@ -253,19 +245,19 @@ class Student(MainWindow):
 
 
 class Events_List_Stedent(QMainWindow):
-    def __init__(self, list_events, student):
+    def __init__(self, student):
         super().__init__()
         uic.loadUi('qt/list_of_events.ui', self)
-        self.list_events = list_events
         self.student = student
-
-        if len(self.list_events) > 0:
-            self.draw_columns(self.list_events)
+        self.event_list = []
+        self.itog = []
+        self.draw_columns()
 
         self.but_back.clicked.connect(self.back)
         self.delete_student_but.clicked.connect(self.delet_event_window)
+        self.add_student_but.clicked.connect(self.add_event_window)
 
-    def draw_columns(self, list_stud):
+    def draw_columns(self):
         self.event.clear()
         self.event.setColumnCount(6)
 
@@ -276,8 +268,16 @@ class Events_List_Stedent(QMainWindow):
         self.event.setHorizontalHeaderItem(3, QTableWidgetItem("Тип (Внут/внеш)"))
         self.event.setHorizontalHeaderItem(4, QTableWidgetItem("Организатор"))
         self.event.setHorizontalHeaderItem(5, QTableWidgetItem("Площадка"))
+        self.event_list = wks1.get("A:G")
+        stud_list = self.student[7].split(';')
+        self.itog = []
+        for i in stud_list:
+            for j in self.event_list[1:]:
+                if str(i) == str(j[0]):
+                    self.itog.append(j)
+                    break
 
-        for i, row in enumerate(list_stud):
+        for i, row in enumerate(self.itog):
 
             self.event.setRowCount(
 
@@ -298,14 +298,14 @@ class Events_List_Stedent(QMainWindow):
         all_s = wks2.get("A:I")
         for i in ids:
             print(i)
-            for j in self.list_events:
+            for j in self.event_list:
                 if i[0] == j[1] and i[1] == j[2]:
                     ev.remove(j[0])
-                    self.list_events.remove(j)
                     print(i)
                     self.student[4] = str(int(self.student[4]) - 1 if i[3] == 'Внутреннее' else self.student[4])
-                    self.student[5] = str(int(self.student[5]) - 1 if i[3] == 'Внутреннее' else self.student[5])
+                    self.student[5] = str(int(self.student[5]) - 1 if i[3] == 'Внешнее' else self.student[5])
                     self.student[6] = str(int(self.student[6]) - int(i[2]))
+                    break
                     
         self.student[7] = ";".join(ev) if len(ev) > 0 else '-1'
         for i in range(len(all_s)):
@@ -315,7 +315,7 @@ class Events_List_Stedent(QMainWindow):
                 all_s[i][6] = self.student[6]
                 all_s[i][7] = self.student[7]
                 wks2.update(all_s, f'A1')
-                self.draw_columns(self.list_events)
+                self.draw_columns()
                 break
 
 
@@ -326,11 +326,108 @@ class Events_List_Stedent(QMainWindow):
         mes = "Вы действительно хотите удалить выбранное мероприятие?" if len(ids) == 1 else "Вы действительно хотите удалить выбранные мероприятия?"
         self.delete_window = DeleteWindow(self, mes)
         self.delete_window.show()
+
+    def add_event_window(self):
+        self.Add_event_S = Add_event_S(self.itog, self.student, self)
+        self.Add_event_S.show()
                 
     def back(self):
         self.Student = Student(self.student)
         self.Student.show()
         self.close()
+
+
+class Add_event_S(QMainWindow):
+    def __init__(self, list_events, student, parent):
+        super().__init__()
+        uic.loadUi('qt/only_add.ui', self)
+        self.list_events = list_events
+        self.add_btn.clicked.connect(self.add_e)
+        self.add_btn.setText('Добавить мероприятие')
+        self.back_but.hide()
+        self.search_btn.clicked.connect(self.search_event)
+        self.new_list = []
+        self.student = student
+        self.parent = parent
+        self.all_list = wks1.get("A:G")
+        self.add_event()
+
+    def draw_columns(self, list_events):
+        self.table_students.clear()
+        self.table_students.setColumnCount(6)
+
+        self.table_students.setRowCount(0)
+        self.table_students.setHorizontalHeaderItem(0, QTableWidgetItem("Название"))
+        self.table_students.setHorizontalHeaderItem(1, QTableWidgetItem("Дата"))
+        self.table_students.setHorizontalHeaderItem(2, QTableWidgetItem("Длительность"))
+        self.table_students.setHorizontalHeaderItem(3, QTableWidgetItem("Тип (Внут/внеш)"))
+        self.table_students.setHorizontalHeaderItem(4, QTableWidgetItem("Организатор"))
+        self.table_students.setHorizontalHeaderItem(5, QTableWidgetItem("Площадка"))
+
+        for i, row in enumerate(list_events):
+
+            self.table_students.setRowCount(
+
+                self.table_students.rowCount() + 1)
+
+            for j, elem in enumerate(row[1:]):
+
+                self.table_students.setItem(
+
+                    i, j, QTableWidgetItem(str(elem)))
+
+    def add_event(self):
+        self.new_list = []
+        for i in self.all_list[1:]:
+            if i not in self.list_events:
+                self.new_list.append(i)
+
+        self.draw_columns(self.new_list)
+
+    def search_event(self):
+        search_text = self.input_name.text()
+        if search_text == '':
+            self.add_event()
+            return
+        
+        new_lists = []
+        for i in self.new_list:
+            print(i)
+            if search_text.lower() in str(i[1]).lower():
+                new_lists.append(i)
+
+        self.draw_columns(new_lists)
+
+    def add_e(self):
+        rows = list(set([i.row() for i in self.table_students.selectedItems()]))
+
+        ids = [[self.table_students.item(i, j).text() for j in range(6)] for i in rows]
+
+        ev = self.student[7].split(';')
+        for i in ids:
+            print(i)
+            for j in self.all_list:
+                print(i, j, i[0] == j[1] and i[1] == j[2])
+                if i[0] == j[1] and i[1] == j[2]:
+                    print(i)
+                    self.student[4] = str(int(self.student[4]) + 1 if i[3] == 'Внутреннее' else self.student[4])
+                    self.student[5] = str(int(self.student[5]) + 1 if i[3] == 'Внешнее' else self.student[5])
+                    self.student[6] = str(int(self.student[6]) + int(i[2]))
+                    ev.append(j[0])
+                    break
+        self.student[7] = ";".join(ev) if len(ev) > 0 else '-1'
+        print(self.student)
+        all_s = wks2.get("A:I")
+        for i in range(len(all_s)):
+            if all_s[i][0] == self.student[0]:
+                all_s[i][4] = self.student[4]
+                all_s[i][5] = self.student[5]
+                all_s[i][6] = self.student[6]
+                all_s[i][7] = self.student[7]
+                wks2.update(all_s, f'A1')
+                self.parent.draw_columns()
+        self.close()
+
 
 class Not_Update(QMainWindow):
     def __init__(self, *args):
@@ -465,7 +562,7 @@ class Events_List(QMainWindow):
             if str(id_for_s[0]) in events_s:
                 events_s.remove(str(id_for_s[0]))
                 self.list_stud[i][4] = int(self.list_stud[i][4]) - 1 if id_for_s[4] == 'Внутреннее' else self.list_stud[i][4]
-                self.list_stud[i][5] = int(self.list_stud[i][5]) - 1 if id_for_s[4] == 'Внутреннее' else self.list_stud[i][5]
+                self.list_stud[i][5] = int(self.list_stud[i][5]) - 1 if id_for_s[4] == 'Внешнее' else self.list_stud[i][5]
                 self.list_stud[i][6] = int(self.list_stud[i][6]) - int(id_for_s[3])
                 self.list_stud[i][7] = ';'.join(events_s) if len(events_s) > 0 else '-1'
         wks2.update(self.list_stud, f'A1')
