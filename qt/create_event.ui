@@ -54,9 +54,15 @@
         <property name="styleSheet">
          <string notr="true">QPushButton{
 background-color: rgb(255, 255, 255);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
 }
 QPushButton:hover{
-background-color: rgb(242, 255, 235);
+background-color: rgb(216, 228, 250);
+border: 2px solid #A0A0A0;
+}
+QPushButton:pressed{
+border: 2px solid #404040;
 }
 </string>
         </property>
@@ -102,7 +108,7 @@ background-color: rgb(242, 255, 235);
          </font>
         </property>
         <property name="text">
-         <string>Название мероприятия:</string>
+         <string>Название:</string>
         </property>
        </widget>
       </item>
@@ -419,11 +425,16 @@ background-color: rgb(242, 255, 235);
         <property name="styleSheet">
          <string notr="true">QPushButton{
 background-color: rgb(221, 255, 204);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
 }
 QPushButton:hover{
 background-color: rgb(201, 255, 128);
+border: 2px solid #A0A0A0;
 }
-</string>
+QPushButton:pressed{
+border: 2px solid #404040;
+}</string>
         </property>
         <property name="text">
          <string>Создать мероприятие</string>

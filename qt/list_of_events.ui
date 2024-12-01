@@ -29,32 +29,19 @@
    <string notr="true">background-color: rgb(232, 245, 250);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QComboBox" name="list_events">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>90</y>
-      <width>351</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);</string>
-    </property>
-   </widget>
    <widget class="QTableWidget" name="event">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>180</y>
+      <y>90</y>
       <width>760</width>
-      <height>360</height>
+      <height>450</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
       <width>760</width>
-      <height>360</height>
+      <height>450</height>
      </size>
     </property>
     <property name="maximumSize">
@@ -96,11 +83,16 @@
     <property name="styleSheet">
      <string notr="true">QPushButton{
 background-color: rgb(255, 255, 255);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
 }
 QPushButton:hover{
-background-color: rgb(242, 255, 235);
+background-color: rgb(216, 228, 250);
+border: 2px solid #A0A0A0;
 }
-</string>
+QPushButton:pressed{
+border: 2px solid #404040;
+}</string>
     </property>
     <property name="text">
      <string>←</string>
@@ -109,18 +101,36 @@ background-color: rgb(242, 255, 235);
    <widget class="QPushButton" name="add_student_but">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>90</y>
-      <width>170</width>
+      <x>360</x>
+      <y>10</y>
+      <width>200</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>200</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>200</width>
+      <height>16777215</height>
+     </size>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 background-color: rgb(221, 255, 204);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
 }
 QPushButton:hover{
 background-color: rgb(201, 255, 128);
+border: 2px solid #A0A0A0;
+}
+QPushButton:pressed{
+border: 2px solid #404040;
 }
 </string>
     </property>
@@ -131,24 +141,36 @@ background-color: rgb(201, 255, 128);
    <widget class="QPushButton" name="delete_student_but">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>90</y>
-      <width>170</width>
+      <x>580</x>
+      <y>10</y>
+      <width>200</width>
       <height>61</height>
      </rect>
     </property>
     <property name="minimumSize">
      <size>
-      <width>170</width>
+      <width>200</width>
       <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>200</width>
+      <height>16777215</height>
      </size>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
 background-color: rgb(255, 185, 185);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
 }
 QPushButton:hover{
 background-color: rgb(255, 128, 128);
+border: 2px solid #A0A0A0;
+}
+QPushButton:pressed{
+border: 2px solid #404040;
 }
 </string>
     </property>

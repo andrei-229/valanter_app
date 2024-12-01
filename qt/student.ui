@@ -54,9 +54,15 @@
         <property name="styleSheet">
          <string notr="true">QPushButton{
 background-color: rgb(255, 255, 255);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
 }
 QPushButton:hover{
-background-color: rgb(242, 255, 235);
+background-color: rgb(216, 228, 250);
+border: 2px solid #A0A0A0;
+}
+QPushButton:pressed{
+border: 2px solid #404040;
 }
 </string>
         </property>
@@ -101,13 +107,19 @@ background-color: rgb(242, 255, 235);
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton{
+         <string notr="true">
+QPushButton{
 background-color: rgb(162, 221, 250);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
 }
 QPushButton:hover{
 background-color: rgb(125, 209, 251);
+border: 2px solid #A0A0A0;
 }
-</string>
+QPushButton:pressed{
+border: 2px solid #404040;
+}</string>
         </property>
         <property name="text">
          <string>Список мероприятий</string>
@@ -136,6 +148,12 @@ background-color: rgb(125, 209, 251);
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>70</width>
@@ -162,6 +180,12 @@ background-color: rgb(125, 209, 251);
       </item>
       <item>
        <widget class="QLineEdit" name="input_fio">
+        <property name="minimumSize">
+         <size>
+          <width>670</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>670</width>
@@ -184,9 +208,15 @@ background-color: rgb(125, 209, 251);
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>130</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>130</width>
           <height>16777215</height>
          </size>
         </property>
@@ -205,9 +235,15 @@ background-color: rgb(125, 209, 251);
       </item>
       <item>
        <widget class="QLineEdit" name="num_inst">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>50</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
@@ -223,9 +259,15 @@ background-color: rgb(125, 209, 251);
       </item>
       <item>
        <widget class="QLabel" name="label_3">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>90</width>
+          <width>100</width>
           <height>16777215</height>
          </size>
         </property>
@@ -244,9 +286,15 @@ background-color: rgb(125, 209, 251);
       </item>
       <item>
        <widget class="QLineEdit" name="num_kurs">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>50</width>
+          <width>40</width>
           <height>16777215</height>
          </size>
         </property>
@@ -262,9 +310,15 @@ background-color: rgb(125, 209, 251);
       </item>
       <item>
        <widget class="QLabel" name="label_4">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>120</width>
           <height>16777215</height>
          </size>
         </property>
@@ -283,9 +337,15 @@ background-color: rgb(125, 209, 251);
       </item>
       <item>
        <widget class="QLineEdit" name="num_group">
+        <property name="minimumSize">
+         <size>
+          <width>270</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>250</width>
+          <width>270</width>
           <height>16777215</height>
          </size>
         </property>
@@ -316,13 +376,13 @@ background-color: rgb(125, 209, 251);
        <widget class="QLabel" name="label_5">
         <property name="minimumSize">
          <size>
-          <width>330</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>330</width>
+          <width>350</width>
           <height>16777215</height>
          </size>
         </property>
@@ -340,7 +400,7 @@ background-color: rgb(125, 209, 251);
        <widget class="QLineEdit" name="in_events">
         <property name="maximumSize">
          <size>
-          <width>400</width>
+          <width>380</width>
           <height>16777215</height>
          </size>
         </property>
@@ -362,13 +422,13 @@ background-color: rgb(125, 209, 251);
        <widget class="QLabel" name="label_6">
         <property name="minimumSize">
          <size>
-          <width>330</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>330</width>
+          <width>350</width>
           <height>16777215</height>
          </size>
         </property>
@@ -386,7 +446,7 @@ background-color: rgb(125, 209, 251);
        <widget class="QLineEdit" name="out_events">
         <property name="maximumSize">
          <size>
-          <width>400</width>
+          <width>380</width>
           <height>16777215</height>
          </size>
         </property>
@@ -408,13 +468,13 @@ background-color: rgb(125, 209, 251);
        <widget class="QLabel" name="label_7">
         <property name="minimumSize">
          <size>
-          <width>330</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>330</width>
+          <width>350</width>
           <height>16777215</height>
          </size>
         </property>
@@ -432,7 +492,7 @@ background-color: rgb(125, 209, 251);
        <widget class="QLineEdit" name="time_total">
         <property name="maximumSize">
          <size>
-          <width>400</width>
+          <width>380</width>
           <height>16777215</height>
          </size>
         </property>
@@ -477,11 +537,16 @@ background-color: rgb(125, 209, 251);
           <property name="styleSheet">
            <string notr="true">QPushButton{
 background-color: rgb(221, 255, 204);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
 }
 QPushButton:hover{
 background-color: rgb(201, 255, 128);
+border: 2px solid #A0A0A0;
 }
-</string>
+QPushButton:pressed{
+border: 2px solid #404040;
+}</string>
           </property>
           <property name="text">
            <string>Сохранить</string>

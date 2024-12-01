@@ -68,7 +68,8 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Отсутствует подключение 
+        <string>Отсутствует
+ подключение 
 к интернету</string>
        </property>
        <property name="alignment">
