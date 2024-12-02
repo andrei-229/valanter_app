@@ -228,6 +228,45 @@ border: 2px solid #404040;
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="delete_student_but">
+        <property name="minimumSize">
+         <size>
+          <width>250</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>250</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">
+QPushButton{
+background-color: rgb(255, 185, 185);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
+}
+QPushButton:hover{
+background-color: rgb(255, 128, 128);
+border: 2px solid #A0A0A0;
+}
+QPushButton:pressed{
+border: 2px solid #404040;
+}</string>
+        </property>
+        <property name="text">
+         <string>Удалить студента</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
