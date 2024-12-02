@@ -39,8 +39,35 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(255, 255, 255);
-alternate-background-color: rgb(242, 255, 235);</string>
+     <string notr="true">QComboBox {
+                background-color: #f0f0f0;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+				background-color: rgb(255, 255, 255);
+				alternate-background-color: rgb(242, 255, 235);
+                padding: 5px;
+                font-size: 14px;
+            }
+            QComboBox:hover {
+                border: 1px solid #888;
+            }
+            QComboBox:focus {
+                border: 1px solid #F0f0f0;
+            }
+            QComboBox::drop-down {
+                border-left: 1px solid #ccc;
+                background-color: #f0f0f0;
+            }
+            QComboBox::down-arrow {
+                image: url(down_arrow.png); /* Укажите путь к вашей стрелке вниз */
+                width: 10px;
+                height: 10px;
+            }
+QComboBox QAbstractItemView {
+                background-color: #ffffff;  /* Цвет фона выпадающего списка */
+                selection-background-color: rgb(221, 255, 204); /* Цвет фона выбранного элемента */
+                selection-color: black;      /* Цвет текста выбранного элемента */
+            }</string>
     </property>
     <property name="frame">
      <bool>true</bool>
@@ -323,7 +350,7 @@ border: 2px solid #404040;
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
