@@ -27,7 +27,7 @@ def check_update():
         return version_release != version_installed
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow):  # главное окно 
     def __init__(self, *args):
         super().__init__()
         uic.loadUi('qt/меин.ui', self)
@@ -72,7 +72,7 @@ class MainWindow(QMainWindow):
         self.close()
 
 
-class Pred_Load_Add(QMainWindow):
+class Pred_Load_Add(QMainWindow):  # окно выбора добавления или поиска студента
     def __init__(self, *args):
         super().__init__()
         uic.loadUi('qt/add_and_find_s.ui', self)
@@ -96,7 +96,7 @@ class Pred_Load_Add(QMainWindow):
         self.close()
 
 
-class Create_St(QMainWindow):
+class Create_St(QMainWindow): # Создание нового студентаs
     def __init__(self, *args):
         global wks2
         super().__init__()
@@ -131,6 +131,7 @@ class Load_Student(QMainWindow):
         self.back_but.clicked.connect(self.back_main)
         self.download_btn.clicked.connect(self.load)
         self.find_student.clicked.connect(self.search_student)
+        self.delete_student_but.clicked.connect(self.delet_win)
 
         self.list_studs = wks2.get("A:I")
         self.draw_columns(self.list_studs)
@@ -179,6 +180,15 @@ class Load_Student(QMainWindow):
 
         self.draw_columns(new_list)
 
+    def delet_win(self):
+        rows = list(set([i.row() for i in self.list_students.selectedItems()]))
+
+        ids = [[self.list_students.item(i, j).text() for j in range(7)] for i in rows]
+        if len(ids) > 0:
+            mes = 'Вы действительно хотите удалить выбранного студента?' if len(ids) == 1 else 'Вы действительно хотите удалить выбранных студентов?'
+            self.Delet_S = DeleteWindow(self, mes)
+            self.Delet_S.show()
+
     def load(self):
         global wks1, all_students
         rows = list(set([i.row() for i in self.list_students.selectedItems()]))
@@ -193,7 +203,22 @@ class Load_Student(QMainWindow):
             self.Student = Student(new_list[0])
             self.Student.show()
             self.close()
+
+    def delete_student(self):
+        self.list_studs = wks2.get("A:I")
+        rows = list(set([i.row() for i in self.list_students.selectedItems()]))
+
+        ids = [[self.list_students.item(i, j).text() for j in range(7)] for i in rows]
+        if len(ids) > 0:
+            for i in ids:
+                for j in self.list_studs:
+                    if i[0].lower() == str(j[1]).lower():
+                        self.list_studs.remove(j)
+            wks2.clear()
+            wks2.update(self.list_studs, "A1")
+            self.draw_columns(self.list_studs)   
         
+
 class Student(MainWindow):
     def __init__(self, student):
         super().__init__()
