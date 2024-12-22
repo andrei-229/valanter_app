@@ -18,8 +18,10 @@ import requests
 
 
 def check_update():
+        global version_installed
+
         headers = {'Authorization': f'Bearer {TOKEN}'}
-        version_installed = open('updater/version.v', 'r').readline()
+        # version_installed = open('updater/version.v', 'r').readline()
         response = requests.get(url, headers=headers)
         release_data = response.json()
         version_release = release_data['tag_name']  # Получите версию релиза
@@ -50,26 +52,38 @@ class MainWindow(QMainWindow):  # главное окно
 
 
     def update(self):
-        # print(check_update())
-        # if not(check_update()):
-        #     self.Not_Update = Not_Update(self)
-        #     self.Not_Update.show()
-        #     return
-        exe_path = "./updater/up.exe"
-        # with open('work', encoding='utf8') as f:
-        #     read = f.readline()
-        os.chdir(d)
-        # Запуск .exe файла
-        subprocess.Popen(exe_path)
-        QApplication.quit()
-        # if self.check_update:
-        #     updater.download_update()
-        #     print('Обновление загружено.')
+        print(check_update())
+        if not(check_update()):
+            self.NoN_Update = NoN_Update()
+            self.NoN_Update.show()
+            return
+        self.Update = Update_App()
+        self.Update.show()
 
     def student_f(self):
         self.Pred_Load_Add = Pred_Load_Add(self)
         self.Pred_Load_Add.show()
         self.close()
+
+
+class NoN_Update(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('qt/non_update.ui', self)
+
+
+class Update_App(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('qt/update.ui', self)
+        self.new_student_btn.clicked.connect(self.update)
+
+    def update(self):
+        exe_path = "./updater/up.exe"
+        os.chdir(d)
+        subprocess.Popen(exe_path) # Запуск .exe файла
+        self.close()
+        QApplication.quit()
 
 
 class Pred_Load_Add(QMainWindow):  # окно выбора добавления или поиска студента
@@ -942,13 +956,14 @@ if __name__ == '__main__':
         url = os.getenv('GIT_LINK')
         repo_owner = os.getenv('REPO_OWNER')  # Имя владельца репозитория
         repo_name = os.getenv('REPO_NAME')   # Имя репозитория
+        version_installed = os.getenv('VERSION_APP')
 
-        with open('work', 'w', encoding='utf8') as f:
-            f.write(d)  # Сохраняем
         main = MainWindow()
 
         main.show()
     except Exception:
+        path = getattr(sys, '_MEIPASS', os.getcwd())  # Дерриктория внутри exe файла
+        os.chdir(path)  # Сменяем рабочудеррикторию, чтобы подгрузить окошки и .env
         non_wifi = NonWifi()
         non_wifi.show()
     
