@@ -223,7 +223,7 @@ border: 2px solid #404040;
    <widget class="QPushButton" name="add_student_but">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>370</x>
       <y>170</y>
       <width>200</width>
       <height>61</height>
@@ -263,7 +263,7 @@ border: 2px solid #404040;
    <widget class="QPushButton" name="delete_student_but">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>590</x>
       <y>170</y>
       <width>200</width>
       <height>61</height>
@@ -343,6 +343,46 @@ border: 2px solid #404040;
      <bool>false</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="edit_but">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>170</y>
+      <width>200</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>200</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>200</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+background-color: rgb(221, 255, 204);
+border: 2px solid #E0E0E0;
+border-radius: 10px;
+}
+QPushButton:hover{
+background-color: rgb(201, 255, 128);
+border: 2px solid #A0A0A0;
+}
+QPushButton:pressed{
+border: 2px solid #404040;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Редактировать</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -350,7 +390,7 @@ border: 2px solid #404040;
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>

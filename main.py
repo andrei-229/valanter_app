@@ -121,10 +121,13 @@ class Create_St(QMainWindow): # Создание нового студентаs
 
     def create_and_add(self):
         if self.input_fio.text() and self.num_kurs.text() and self.num_group.text() and self.num_inst.text():
+            list_stud = wks2.get('A:I')
             list_id = [int(i) for i in wks2.col_values(1)]
             new_list = [[max(list_id) + 1, self.input_fio.text(), self.num_kurs.text(), self.num_group.text(), '0', '0', '0', '-1', self.num_inst.text()]]
-            wks2.update(new_list, f'A{len(list_id)+1}')
-            print(wks2.get("A:I"))
+            list_stud.append(new_list[0])
+            list_stud = sorted(list_stud, key=lambda x: x[1].title())  # сортировка по ФИО
+            wks2.update(list_stud, f'A1')
+            print(list_stud)
             self.Student = Student(new_list[0])
             self.Student.show()
             self.close()  # необходимо перезагрузить таблицу, чтобы добавленный студент увиделся в ней.
@@ -151,6 +154,7 @@ class Load_Student(QMainWindow):
         self.draw_columns(self.list_studs)
 
     def draw_columns(self, list_stud):
+        print(type(self.list_students))
         self.list_students.clear()
         self.list_students.setColumnCount(7)
 
@@ -229,6 +233,7 @@ class Load_Student(QMainWindow):
                     if i[0].lower() == str(j[1]).lower():
                         self.list_studs.remove(j)
             wks2.clear()
+            self.list_studs = sorted(self.list_studs, key=lambda x: x[1].title())  # сортировка по ФИО
             wks2.update(self.list_studs, "A1")
             self.draw_columns(self.list_studs)   
         
@@ -273,6 +278,7 @@ class Student(MainWindow):
                 self.list_studs[i][6] = str(int(new_time_total))
                 break
         print(self.list_studs)
+        self.list_studs = sorted(self.list_studs, key=lambda x: x[1].title())  # сортировка по ФИО
         wks2.update(self.list_studs, f'A1')
 
     def events_list_s(self):
@@ -525,6 +531,7 @@ class Events_List(QMainWindow):
         self.add_student_but.clicked.connect(self.add_student)
         self.delete_student_but.clicked.connect(self.delete_stud_window)
         self.export_btn.clicked.connect(self.export)
+        self.edit_but.clicked.connect(self.edit_event_window)
 
         for i in all_events[1:]:
             self.list_events.addItem(f"{str(i[1])} - {str(i[2])}")
@@ -655,20 +662,12 @@ class Events_List(QMainWindow):
                     cnt_vnut = int(self.list_stud[i][4]) - 1 if ev[4] == 'Внутреннее' else self.list_stud[i][4]
                     cnt_vnesh = int(self.list_stud[i][5]) - 1 if ev[4] == 'Внешнее' else self.list_stud[i][5]
 
-                    arr = [None, 
-                          None, 
-                          None, 
-                          None, 
-                          cnt_vnut,
-                          cnt_vnesh,
-                          dlit,
-                          events_s]
-                    self.list_stud[i] = arr
+                    self.list_stud[i][4] = int(j[3])+1 if self.event_list[4] == 'Внутреннее' else j[3]
+                    self.list_stud[i][5] = int(j[4])+1 if self.event_list[4] == 'Внешнее' else j[4]
+                    self.list_stud[i][6] = int(j[5])+int(self.event_list[3])
+                    self.list_stud[i][7] = events_s
                     break
-                else:
-                    сount += 1
-            if сount == len(ids):
-                self.list_stud[i] = [None]*8
+        self.list_stud = sorted(self.list_stud, key=lambda x: x[1].title())
         wks2.update(self.list_stud, 'A1')
         self.download_event()
 
@@ -745,6 +744,59 @@ class Events_List(QMainWindow):
             print('Закрой файл, ДЕБИЛ')
         print('Done')
 
+    def edit_event_window(self):
+        global wks1, wks2, all_events
+        selected_value = self.list_events.currentText().split(' - ')[0]
+        ide = 0
+        for i in all_events[1:]:
+            if str(i[1]) == str(selected_value):
+                ide = i
+                break
+        self.Edit_Event = Edit_Event(self, ide)
+        self.Edit_Event.show()
+        self.close()
+
+
+class Edit_Event(QMainWindow): # Класс для редактирования события.
+    def __init__(self, parent, event_list):
+        super().__init__()
+        uic.loadUi('qt/edit_event.ui', self)
+        self.back_but.clicked.connect(self.back_main)
+
+        self.event_list = event_list
+        self.name_event.setText(event_list[1])
+        self.date_event.setText(event_list[2])
+        self.hours_event.setText(event_list[3])
+        self.author_event.setText(event_list[5])
+        self.input_platform.setText(event_list[6])
+        self.vnesh_radio.setChecked(True if event_list[4] == 'Внешнее' else False)
+        self.vnut_radio.setChecked(True if event_list[4] == 'Внутреннее' else False)
+        self.save_but.clicked.connect(self.save_event)
+
+    def back_main(self):
+        self.Event = Events_List()
+        self.Event.show()
+        self.close()
+
+    def save_event(self):
+        global wks1, wks2, all_events
+        self.event_list[1] = self.name_event.text()
+        self.event_list[2] = self.date_event.text()
+        delta = int(self.hours_event.text()) - int(self.event_list[3])
+        self.event_list[3] = self.hours_event.text()
+        self.event_list[4] = 'Внутреннее' if self.vnut_radio.isChecked() else 'Внешнее'
+        self.event_list[5] = self.author_event.text()
+        self.event_list[6] = self.input_platform.text()
+        if delta != 0:
+            pass
+
+        for i in range(len(all_events)):
+            if str(all_events[i][0]) == str(self.event_list[0]):
+                all_events[i] = self.event_list
+                break
+        wks1.update(all_events, 'A1')
+        self.back_main()
+
 
 class DeleteWindow(QMainWindow): # Класс для удаления события.
     def __init__(self, parent, mes):
@@ -812,7 +864,10 @@ class Create_And_Add(QMainWindow): # Класс для создания ново
             list_id = [int(i) for i in wks2.col_values(1)]
             cnt_vnut = 0 if self.event_list[4] != 'Внутреннее' else 1
             cnt_vnesh = 0 if self.event_list[4]!= 'Внешнее' else 1
-            wks2.update([[max(list_id) + 1, self.input_fio.text(), self.num_kurs.text(), self.num_group.text(), cnt_vnut, cnt_vnesh, self.event_list[3], self.event_list[0], self.num_inst.text()]], f'A{len(list_id)+1}')
+            list_stud = wks2.get("A:I")
+            list_stud.append([max(list_id) + 1, self.input_fio.text(), self.num_kurs.text(), self.num_group.text(), cnt_vnut, cnt_vnesh, self.event_list[3], self.event_list[0], self.num_inst.text()])
+            list_stud = sorted(list_stud, key=lambda x: x[1].title())  # сортировка студентов по фамилии
+            wks2.update(list_stud, f'A1')
             self.parent.download_event()
             self.close()
             self.parent.download_event()  # необходимо перезагрузить таблицу, чтобы добавленный студент увиделся в ней. Внешни
@@ -893,9 +948,9 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
         rows = list(set([i.row() for i in self.table_students.selectedItems()]))
 
         ids = [[self.table_students.item(i, j).text() for j in range(7)] for i in rows]
-        for i in range(len(self.list_studs)):
+        for j in ids:
             сount = 0
-            for j in ids:
+            for i in range(len(self.list_studs)):
                 print(j)
                 j = [j[0], j[2], j[3], j[4], j[5], j[6], j[1]]
                 if j[0] == self.list_studs[i][1]:
@@ -906,21 +961,17 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
                     else: 
                         a = str(self.event_list[0])
                     print(j, a)
-                    arr = [None, 
-                          None, 
-                          None, 
-                          None, 
-                          int(j[3])+1 if self.event_list[4] == 'Внутреннее' else j[3],
-                          int(j[4])+1 if self.event_list[4] == 'Внешнее' else j[4],
-                          int(j[5])+int(self.event_list[3]),
-                          a,
-                          None]
-                    self.list_studs[i] = arr
+                    self.list_studs[i][4] = int(j[3])+1 if self.event_list[4] == 'Внутреннее' else j[3]
+                    self.list_studs[i][5] = int(j[4])+1 if self.event_list[4] == 'Внешнее' else j[4]
+                    self.list_studs[i][6] = int(j[5])+int(self.event_list[3])
+                    self.list_studs[i][7] = a
                     break
                 else:
                     сount += 1
-            if сount == len(ids):
-                self.list_studs[i] = [None]*8
+            # if сount == len(ids):
+            #     self.list_studs[i] = [None]*8
+        print(self.list_studs)
+        self.list_studs = sorted(self.list_studs, key=lambda x: x[1].title())  # сортировка студентов по фамилии
         wks2.update(self.list_studs, 'A1')
 
         self.parent.download_event()  # необходимо перезагрузить таблицу, чтобы добавленный студент увиделся в ней. Внешний
