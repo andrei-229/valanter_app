@@ -662,9 +662,9 @@ class Events_List(QMainWindow):
                     cnt_vnut = int(self.list_stud[i][4]) - 1 if ev[4] == 'Внутреннее' else self.list_stud[i][4]
                     cnt_vnesh = int(self.list_stud[i][5]) - 1 if ev[4] == 'Внешнее' else self.list_stud[i][5]
 
-                    self.list_stud[i][4] = int(j[3])+1 if self.event_list[4] == 'Внутреннее' else j[3]
-                    self.list_stud[i][5] = int(j[4])+1 if self.event_list[4] == 'Внешнее' else j[4]
-                    self.list_stud[i][6] = int(j[5])+int(self.event_list[3])
+                    self.list_stud[i][4] = int(self.list_stud[i][4]) - 1 if ev[4] == 'Внутреннее' else self.list_stud[i][4]
+                    self.list_stud[i][5] = int(self.list_stud[i][5]) - 1 if ev[4] == 'Внешнее' else self.list_stud[i][5]
+                    self.list_stud[i][6] = str(int(self.list_stud[i][6]) - int(ev[3]))
                     self.list_stud[i][7] = events_s
                     break
         self.list_stud = sorted(self.list_stud, key=lambda x: x[1].title())
@@ -752,18 +752,24 @@ class Events_List(QMainWindow):
             if str(i[1]) == str(selected_value):
                 ide = i
                 break
-        self.Edit_Event = Edit_Event(self, ide)
+        try:
+            self.Edit_Event = Edit_Event(self, ide, self.list_stud)
+        except AttributeError:
+            self.list_stud = wks2.get("A:I")
+            self.Edit_Event = Edit_Event(self, ide, self.list_stud)
         self.Edit_Event.show()
         self.close()
 
 
 class Edit_Event(QMainWindow): # Класс для редактирования события.
-    def __init__(self, parent, event_list):
+    def __init__(self, parent, event_list, list_stud):
         super().__init__()
         uic.loadUi('qt/edit_event.ui', self)
         self.back_but.clicked.connect(self.back_main)
 
         self.event_list = event_list
+        self.list_stud = list_stud
+
         self.name_event.setText(event_list[1])
         self.date_event.setText(event_list[2])
         self.hours_event.setText(event_list[3])
@@ -780,21 +786,33 @@ class Edit_Event(QMainWindow): # Класс для редактирования 
 
     def save_event(self):
         global wks1, wks2, all_events
-        self.event_list[1] = self.name_event.text()
-        self.event_list[2] = self.date_event.text()
+        self.event_list2 = self.event_list[:]  # ID
+        self.event_list2[1] = self.name_event.text()
+        self.event_list2[2] = self.date_event.text()
         delta = int(self.hours_event.text()) - int(self.event_list[3])
-        self.event_list[3] = self.hours_event.text()
-        self.event_list[4] = 'Внутреннее' if self.vnut_radio.isChecked() else 'Внешнее'
-        self.event_list[5] = self.author_event.text()
-        self.event_list[6] = self.input_platform.text()
+        self.event_list2[3] = self.hours_event.text()
+        self.event_list2[4] = 'Внутреннее' if self.vnut_radio.isChecked() else 'Внешнее'
+        self.event_list2[5] = self.author_event.text()
+        self.event_list2[6] = self.input_platform.text()
         if delta != 0:
-            pass
-
+            for j in range(len(self.list_stud)):
+                studq = self.list_stud[j][7].split(';')
+                if str(self.event_list[0]) in studq:
+                    self.list_stud[j][6] = str(int(self.list_stud[j][6]) + delta)
+        print(self.event_list[4], self.event_list[4] == 'Внутреннее', self.vnut_radio.isChecked(), self.event_list[4] == 'Внешнее', self.vnesh_radio.isChecked())
+        if not((self.event_list[4] == 'Внутреннее') == self.vnut_radio.isChecked()) or not((self.event_list[4] == 'Внешнее') == self.vnesh_radio.isChecked()):
+            print(1)
+            for j in range(len(self.list_stud)):
+                studq = self.list_stud[j][7].split(';')
+                if str(self.event_list[0]) in studq:
+                    self.list_stud[j][4] = int(self.list_stud[j][4]) + 1 if self.vnut_radio.isChecked() else int(self.list_stud[j][4]) -1
+                    self.list_stud[j][5] = int(self.list_stud[j][5]) + 1 if self.vnesh_radio.isChecked() else int(self.list_stud[j][5]) -1
         for i in range(len(all_events)):
             if str(all_events[i][0]) == str(self.event_list[0]):
-                all_events[i] = self.event_list
+                all_events[i] = self.event_list2
                 break
         wks1.update(all_events, 'A1')
+        wks2.update(self.list_stud, 'A1')
         self.back_main()
 
 
@@ -950,9 +968,9 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
         ids = [[self.table_students.item(i, j).text() for j in range(7)] for i in rows]
         for j in ids:
             сount = 0
+            j = [j[0], j[2], j[3], j[4], j[5], j[6], j[1]]
             for i in range(len(self.list_studs)):
                 print(j)
-                j = [j[0], j[2], j[3], j[4], j[5], j[6], j[1]]
                 if j[0] == self.list_studs[i][1]:
                     if self.list_studs[i][7] != str(-1):
                         a = self.list_studs[i][7].split(';')
@@ -960,7 +978,7 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
                         a = ';'.join(a)
                     else: 
                         a = str(self.event_list[0])
-                    print(j, a)
+                    print(j, self.event_list)
                     self.list_studs[i][4] = int(j[3])+1 if self.event_list[4] == 'Внутреннее' else j[3]
                     self.list_studs[i][5] = int(j[4])+1 if self.event_list[4] == 'Внешнее' else j[4]
                     self.list_studs[i][6] = int(j[5])+int(self.event_list[3])
