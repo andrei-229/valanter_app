@@ -175,6 +175,9 @@ border: 2px solid #404040;
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
+    <property name="sortingEnabled">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="but_back">
     <property name="geometry">
@@ -380,7 +383,7 @@ border: 2px solid #404040;
 </string>
     </property>
     <property name="text">
-     <string>Редактировать</string>
+     <string>Редактировать 🔧</string>
     </property>
    </widget>
   </widget>

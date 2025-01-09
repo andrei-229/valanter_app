@@ -224,7 +224,7 @@ border: 2px solid #404040;
 }</string>
         </property>
         <property name="text">
-         <string>Загрузить</string>
+         <string>Загрузить ↑</string>
         </property>
        </widget>
       </item>
@@ -263,7 +263,7 @@ border: 2px solid #404040;
 }</string>
         </property>
         <property name="text">
-         <string>Удалить студента</string>
+         <string>Удалить студента 🗑️</string>
         </property>
        </widget>
       </item>
@@ -277,7 +277,7 @@ border: 2px solid #404040;
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>

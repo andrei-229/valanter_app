@@ -3,10 +3,9 @@ import sys
 import gspread
 
 from PyQt5 import uic
-
 from PyQt5.QtWidgets import QApplication
-
 from PyQt5.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget, QFileDialog
+from PyQt5.QtCore import Qt
 
 from dotenv import load_dotenv
 
@@ -149,6 +148,8 @@ class Load_Student(QMainWindow):
         self.download_btn.clicked.connect(self.load)
         self.find_student.clicked.connect(self.search_student)
         self.delete_student_but.clicked.connect(self.delet_win)
+        self.list_students.horizontalHeader().sectionClicked.connect(self.sort_column)
+        self.type_sort = 0
 
         self.list_studs = wks2.get("A:I")
         self.draw_columns(self.list_studs)
@@ -221,6 +222,17 @@ class Load_Student(QMainWindow):
             self.Student = Student(new_list[0])
             self.Student.show()
             self.close()
+    
+    def sort_column(self, index):
+        self.type_sort += 1
+        list_stud = []
+
+        for i in self.list_studs:
+            list_stud.append([i[0], i[1], int(i[8]), int(i[2]), i[3], int(i[4]), int(i[5]), int(i[6]), i[7]])
+        list_stud = sorted(list_stud, key=lambda x: x[index+1], reverse=self.type_sort%2)
+        for i in range(len(list_stud)):
+            list_stud[i] = [list_stud[i][0], list_stud[i][1], list_stud[i][3], list_stud[i][4], list_stud[i][5], list_stud[i][6], list_stud[i][7], list_stud[i][8], list_stud[i][2]]
+        self.draw_columns(list_stud)
 
     def delete_student(self):
         self.list_studs = wks2.get("A:I")
@@ -860,7 +872,7 @@ class Add_Stud(QMainWindow): # Класс для добавления новог
         self.close()
 
     def iz_baz(self):
-        self.Add_Student_Baz = Add_Student_Baz(self.parent, self.event_list)
+        self.Add_Student_Baz = Add_Student_Baz(self.parent, self.event_list, [])
         self.Add_Student_Baz.show()
         self.close()
         
@@ -899,7 +911,7 @@ class Create_And_Add(QMainWindow): # Класс для создания ново
 
 
 class Add_Student_Baz(QMainWindow): # Класс для добавления студента из базы к событию.
-    def __init__(self, parent, event_list):
+    def __init__(self, parent, event_list, total=[]):
         super().__init__()
 
         uic.loadUi('qt/only_add.ui', self)
@@ -913,6 +925,12 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
         self.back_but.clicked.connect(self.back_add)
         self.search_btn.clicked.connect(self.search_student)
         self.add_btn.clicked.connect(self.add_student)
+        self.vibork_but.clicked.connect(self.select_student)
+        self.table_students.cellClicked.connect(self.add_to_list)
+        self.total_list = total
+        self.table_students.horizontalHeader().sectionClicked.connect(self.sort_column)
+        self.type_sort = 0
+        print(self.total_list)
 
     def draw_columns(self, list_stud):
         self.table_students.clear()
@@ -926,18 +944,31 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
         self.table_students.setHorizontalHeaderItem(4, QTableWidgetItem("Кол-во внут."))
         self.table_students.setHorizontalHeaderItem(5, QTableWidgetItem("Кол-во внеш."))
         self.table_students.setHorizontalHeaderItem(6, QTableWidgetItem("Суммарные часы"))
-
+        
         for i, row in enumerate(list_stud):
-
+            print(row)
             self.table_students.setRowCount(
 
                 self.table_students.rowCount() + 1)
+
+
 
             for j, elem in enumerate(row[1:]):
 
                 self.table_students.setItem(
 
                     i, j, QTableWidgetItem(str(elem)))
+                
+    def sort_column(self, index):
+        self.type_sort += 1
+        list_stud = []
+
+        for i in self.list_studs:
+            if str(self.event_list[0]) not in str(i[7]).split(';'):
+                list_stud.append([i[0], i[1], int(i[8]), int(i[2]), i[3], int(i[4]), int(i[5]), int(i[6]), i[7]])
+        list_stud = sorted(list_stud, key=lambda x: x[index+1], reverse=self.type_sort%2)
+        print(list_stud, index) 
+        self.draw_columns(list_stud)
 
     def load_table(self):
         
@@ -948,24 +979,39 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
                 list_stud.append([i[0], i[1], i[8], i[2], i[3], i[4], i[5], i[6], i[7]])
         
         self.draw_columns(list_stud)
-                
+
+    def add_to_list(self, row, column):
+        row_items = []
+        for col in range(self.table_students.columnCount()):
+            item = self.table_students.item(row, col)
+            if item:
+                row_items.append(item.text())
+        if row_items not in self.total_list:  # убираем повторяющиеся студенты
+            self.total_list.append(row_items)
     def search_student(self):
+        list_stud = []
+
+        for i in self.list_studs:
+            if str(self.event_list[0]) not in str(i[7]).split(';'):
+                list_stud.append([i[0], i[1], i[8], i[2], i[3], i[4], i[5], i[6], i[7]])
         search_text = self.input_name.text()
         if search_text == '':
             self.load_table()
             return
         
         new_list = []
-        for i in self.list_studs:
+        for i in list_stud:
             if search_text.lower() in str(i[1]).lower():
                 new_list.append(i)
 
         self.draw_columns(new_list)
+        
 
     def add_student(self):
         rows = list(set([i.row() for i in self.table_students.selectedItems()]))
 
-        ids = [[self.table_students.item(i, j).text() for j in range(7)] for i in rows]
+        ids = [[self.table_students.item(i, j).text() for j in range(7)] for i in rows] + self.total_list
+        # ids = self.total_list[::]
         for j in ids:
             сount = 0
             j = [j[0], j[2], j[3], j[4], j[5], j[6], j[1]]
@@ -993,11 +1039,71 @@ class Add_Student_Baz(QMainWindow): # Класс для добавления с�
         wks2.update(self.list_studs, 'A1')
 
         self.parent.download_event()  # необходимо перезагрузить таблицу, чтобы добавленный студент увиделся в ней. Внешний
+        
+        self.close()
+
+    def select_student(self):
+        self.Viborka = Viborka(self, self.parent, self.total_list, self.event_list)
+        self.Viborka.show()
         self.close()
 
     def back_add(self):
         self.Add_Student = Add_Stud(self.parent, self.event_list)
         self.Add_Student.show()
+        self.close()
+
+
+class Viborka(QMainWindow):
+    def __init__(self, add_baz, parent, total_list, event_list):
+        super().__init__()
+        uic.loadUi('qt/list_of_vibork.ui', self)
+        self.total_list = total_list
+        self.parent = parent
+        self.add_baz = add_baz
+        self.event_list = event_list
+        self.draw_columns(total_list)
+        self.but_back.clicked.connect(self.back)
+        self.delete_student_but.clicked.connect(self.delete_student)
+
+    def draw_columns(self, list_stud):
+        self.table_students.clear()
+        self.table_students.setColumnCount(7)
+
+        self.table_students.setRowCount(0)
+        self.table_students.setHorizontalHeaderItem(0, QTableWidgetItem("ФИО"))
+        self.table_students.setHorizontalHeaderItem(1, QTableWidgetItem("№ Института"))
+        self.table_students.setHorizontalHeaderItem(2, QTableWidgetItem("Курс"))
+        self.table_students.setHorizontalHeaderItem(3, QTableWidgetItem("Группа"))
+        self.table_students.setHorizontalHeaderItem(4, QTableWidgetItem("Кол-во внут."))
+        self.table_students.setHorizontalHeaderItem(5, QTableWidgetItem("Кол-во внеш."))
+        self.table_students.setHorizontalHeaderItem(6, QTableWidgetItem("Суммарные часы"))
+        
+        for i, row in enumerate(list_stud):
+            print(row)
+            self.table_students.setRowCount(
+
+                self.table_students.rowCount() + 1)
+
+
+
+            for j, elem in enumerate(row):
+
+                self.table_students.setItem(
+
+                    i, j, QTableWidgetItem(str(elem)))
+                
+    def delete_student(self):
+        rows = list(set([i.row() for i in self.table_students.selectedItems()]))
+
+        ids = [[self.table_students.item(i, j).text() for j in range(7)] for i in rows]
+        for j in ids:
+            self.total_list.remove(j)
+        self.draw_columns(self.total_list)
+
+
+    def back(self):
+        self.Add_Student_Baz = Add_Student_Baz(self.parent, self.event_list, self.total_list)
+        self.Add_Student_Baz.show()
         self.close()
 
 
